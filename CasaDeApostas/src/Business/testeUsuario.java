@@ -7,7 +7,7 @@ import Model.Usuario;
 public class testeUsuario {
 
 	public static void main(String[] args) {
-		Usuario user = new Usuario("caua@gmail.com", "senhaFoda3");
+		Usuario user = new Usuario("andre@gmail.com", "senhaFoda");
 		
 		UsuarioBusiness userBusiness = new UsuarioBusiness();
 		
