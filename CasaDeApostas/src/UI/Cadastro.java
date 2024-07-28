@@ -20,6 +20,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
 
 public class Cadastro {
 
@@ -29,6 +30,7 @@ public class Cadastro {
     private JPasswordField txtSenha;
     private JPasswordField txtConfirmarSenha;
     private JButton btnMostrarSenha;
+    private boolean Adm = false;
 
     
     public JFrame getFrame() {
@@ -36,6 +38,12 @@ public class Cadastro {
     }
     
     public Cadastro() {
+    	this.Adm = false;
+        initialize();
+    }
+    
+    public Cadastro(boolean Admin) {
+    	this.Adm = Admin;
         initialize();
     }
 
@@ -44,9 +52,12 @@ public class Cadastro {
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		frame.getContentPane().setBackground(new Color(70, 163, 255));
 		frame.setBounds(100, 100, 550, 601);
+		frame.setLocationRelativeTo(null); 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setTitle("Cadastre-se");
 		
 		txtNome = new JTextField();
 		txtNome.setFont(new Font("Dialog", Font.PLAIN, 16));
@@ -55,11 +66,13 @@ public class Cadastro {
 		txtNome.setColumns(10);
 		
 		JLabel lblNewLabel = new JLabel("Nome");
+		lblNewLabel.setForeground(new Color(255, 255, 255));
 		lblNewLabel.setFont(new Font("Dialog", Font.BOLD, 18));
 		lblNewLabel.setBounds(107, 70, 124, 20);
 		frame.getContentPane().add(lblNewLabel);
 		
 		JLabel lblEmail = new JLabel("Email");
+		lblEmail.setForeground(new Color(255, 255, 255));
 		lblEmail.setFont(new Font("Dialog", Font.BOLD, 18));
 		lblEmail.setBounds(107, 150, 124, 20);
 		frame.getContentPane().add(lblEmail);
@@ -71,6 +84,7 @@ public class Cadastro {
 		frame.getContentPane().add(txtEmail);
 		
 		JLabel lblSenha = new JLabel("Senha");
+		lblSenha.setForeground(new Color(255, 255, 255));
 		lblSenha.setFont(new Font("Dialog", Font.BOLD, 18));
 		lblSenha.setBounds(107, 225, 124, 20);
 		frame.getContentPane().add(lblSenha);
@@ -83,6 +97,7 @@ public class Cadastro {
 		frame.getContentPane().add(txtSenha);
 		
 		JLabel lblConfirmeSuaSenha = new JLabel("Confirmar Senha");
+		lblConfirmeSuaSenha.setForeground(new Color(255, 255, 255));
 		lblConfirmeSuaSenha.setFont(new Font("Dialog", Font.BOLD, 18));
 		lblConfirmeSuaSenha.setBounds(107, 295, 200, 20);
 		frame.getContentPane().add(lblConfirmeSuaSenha);
@@ -95,12 +110,15 @@ public class Cadastro {
 		frame.getContentPane().add(txtConfirmarSenha);
 		
 		JButton btnCadastrar = new JButton("Cadastrar-se");
+		btnCadastrar.setForeground(new Color(255, 255, 255));
+		btnCadastrar.setMnemonic('C');
 		btnCadastrar.setFont(new Font("Dialog", Font.BOLD, 18));
+		btnCadastrar.setBackground(new Color(0, 128, 192));
 		btnCadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				UsuarioBusiness ctr = new UsuarioBusiness();
 				if(txtSenha.getText().equals(txtConfirmarSenha.getText())) {
-					Usuario newUser = new Usuario(txtNome.getText(), txtEmail.getText(), txtSenha.getText(), 0, false);
+					Usuario newUser = new Usuario(txtNome.getText(), txtEmail.getText(), txtSenha.getText(), 0, Adm);
 					try {
 						if(ctr.cadastrarUsuario(newUser)) {
 							JOptionPane.showMessageDialog(frame, "Usuario Cadastrado Com Sucesso!");
@@ -152,6 +170,8 @@ public class Cadastro {
 		frame.getContentPane().add(btnMostrarConfirmarSenha);
 		
 		JButton btnVoltar = new JButton("Voltar");
+		btnVoltar.setForeground(new Color(255, 255, 255));
+		btnVoltar.setMnemonic('V');
 		btnVoltar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Login login = new Login();
@@ -160,7 +180,8 @@ public class Cadastro {
 			}
 		});
 		btnVoltar.setFont(new Font("Dialog", Font.BOLD, 12));
-		btnVoltar.setBounds(213, 470, 111, 31);
+		btnVoltar.setBounds(207, 469, 111, 31);
+		btnVoltar.setBackground(new Color(0, 128, 192));
 		frame.getContentPane().add(btnVoltar);
 	}
 	

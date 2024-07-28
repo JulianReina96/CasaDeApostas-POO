@@ -5,12 +5,15 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 import java.awt.BorderLayout;
+import java.awt.Color;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 
 import java.awt.Font;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -62,11 +65,16 @@ public class Login {
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		frame.getContentPane().setBackground(new Color(70, 163, 255));
 		frame.setBounds(100, 100, 550, 601);
+		frame.setLocationRelativeTo(null); 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setTitle("Login");
 		
 		JLabel lblEmail = new JLabel("Email");
+		lblEmail.setForeground(new Color(255, 255, 255));
+		lblEmail.setBackground(new Color(255, 255, 255));
 		lblEmail.setFont(new Font("Dialog", Font.BOLD, 18));
 		lblEmail.setBounds(107, 104, 124, 20);
 		frame.getContentPane().add(lblEmail);
@@ -78,6 +86,7 @@ public class Login {
 		frame.getContentPane().add(txtEmail);
 		
 		JLabel lblSenha = new JLabel("Senha");
+		lblSenha.setForeground(new Color(255, 255, 255));
 		lblSenha.setFont(new Font("Dialog", Font.BOLD, 18));
 		lblSenha.setBounds(107, 179, 124, 20);
 		frame.getContentPane().add(lblSenha);
@@ -92,6 +101,8 @@ public class Login {
 		JButton btnCadastro = new JButton("Cadastrar-se");
 		btnCadastro.setMnemonic('C');
 		btnCadastro.setFont(new Font("Dialog", Font.BOLD, 18));
+		btnCadastro.setBackground(new Color(0, 128, 192));
+		btnCadastro.setForeground(new Color(255, 255, 255));
 		btnCadastro.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Cadastro cadastro = new Cadastro();
@@ -103,6 +114,8 @@ public class Login {
 		frame.getContentPane().add(btnCadastro);
 		
 		JButton btnLogin = new JButton("Entrar");
+		btnLogin.setBackground(new Color(0, 128, 192));
+		btnLogin.setForeground(new Color(255, 255, 255));
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				UsuarioBusiness ctr = new UsuarioBusiness();
