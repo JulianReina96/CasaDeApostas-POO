@@ -10,9 +10,8 @@ public class UsuarioPostgreDAO implements UsuarioDAO {
 
 	
 	public Usuario getUsuario(Usuario user) throws SQLException {
-		PreparedStatement ps = ConexaoSingleton.getInstance().getConexao().prepareStatement("SELECT * FROM USUARIO WHERE EMAIL = ? AND SENHA = ?;");
+		PreparedStatement ps = ConexaoSingleton.getInstance().getConexao().prepareStatement("SELECT * FROM USUARIO WHERE EMAIL = ?;");
 		ps.setString(1, user.getEmail());
-		ps.setString(2, user.getSenha());
 		
 		ResultSet rs = ps.executeQuery();
 		if(rs.next()) {

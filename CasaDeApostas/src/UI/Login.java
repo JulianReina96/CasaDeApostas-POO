@@ -126,6 +126,9 @@ public class Login {
 					}
 					else {
 						JOptionPane.showMessageDialog(frame, "Bem vindo a Cat'sBet " + userSession.getNome() + "!");
+						Home home = new Home();
+						frame.setVisible(false);
+						home.getFrame().setVisible(true);
 					}
 					
 				} catch (SQLException e1) {
