@@ -13,7 +13,7 @@ public class ApostaDto {
 	public ApostaDto(Aposta aposta) {
 		super();
 		NomeUsuario = aposta.getUsuario().getNome();
-		DescricaoEvento = aposta.getEvento().getDescricao();
+		DescricaoEvento = aposta.getEvento().getNome();
 		OddApostada = aposta.getOddApostada();
 		DataEvento = aposta.getEvento().getDataEvento();
 		this.tipoAposta = aposta.getTipoAposta().getDescricao();
