@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JButton;
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
 import Model.Evento;
@@ -20,6 +21,7 @@ import java.awt.Choice;
 import javax.swing.JTextField;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.text.DecimalFormat;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
@@ -108,20 +110,32 @@ public class Apostar {
 		lblEvento.setBounds(93, 11, 316, 23);
 		frame.getContentPane().add(lblEvento);
 		
+		lblGanhos = new JLabel("");
+		lblGanhos.setHorizontalAlignment(SwingConstants.CENTER);
+		lblGanhos.setBounds(287, 128, 46, 14);
+		frame.getContentPane().add(lblGanhos);
+		
 		txtValorApostado = new JTextField();
-		txtValorApostado.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusLost(FocusEvent e) {
-				var valor = txtValorApostado.getText();
-				lblGanhos.setText(Double.toString(Double.valueOf(valor)));
-			}
-		});
 		txtValorApostado.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if(!Character.isDigit(c) && c != ',') {
+					e.consume();
+				}
+				else if(c == ',' && (txtValorApostado.getText().contains(",") || txtValorApostado.getText().length() < 1)) {
+					e.consume();
+				}
+				else {
+					var valor = txtValorApostado.getText();
+					if(c != ',') {
+						valor = valor + c;
+					}
+					Double valorD = Double.valueOf(valor.replace(',', '.'));
+					lblGanhos.setText(valorD.toString());
+				}
 			}
 		});
+		
 		txtValorApostado.setBounds(169, 125, 86, 20);
 		frame.getContentPane().add(txtValorApostado);
 		txtValorApostado.setColumns(10);
@@ -131,10 +145,6 @@ public class Apostar {
 		lblValorApostado.setLabelFor(txtValorApostado);
 		lblValorApostado.setBounds(189, 107, 46, 14);
 		frame.getContentPane().add(lblValorApostado);
-		
-		lblGanhos = new JLabel("");
-		lblGanhos.setHorizontalAlignment(SwingConstants.CENTER);
-		lblGanhos.setBounds(287, 128, 46, 14);
-		frame.getContentPane().add(lblGanhos);
+	
 	}
 }
