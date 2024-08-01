@@ -65,5 +65,23 @@ public class Aposta {
 		return dataAposta;
 	}
 	
+	public double getOddApostada() {
+		
+		switch(tipoAposta.getID()) {
+		case 1:
+			return this.evento.getOddVitoria();
+		case 2:
+			return this.evento.getOddEmpate();
+		case 3:
+			return this.evento.getOddDerrota();
+			default:
+				return 0;
+				//verificar tratamento caso valor inserido seja incorreto
+		}
+
+		}
+		
+	}
 	
-}
+	
+
