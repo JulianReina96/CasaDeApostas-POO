@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import DAO.UsuarioDAO;
 import DAO.UsuarioPostgreDAO;
 import Model.Usuario;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class UsuarioBusiness {
 	private UsuarioDAO usuarioDAO = new UsuarioPostgreDAO();
@@ -15,16 +16,17 @@ public class UsuarioBusiness {
 	}
 	
 	public Usuario Login(Usuario user) throws SQLException {
-		user.setSenha(criptografarSenha(user));
-		return usuarioDAO.getUsuario(user);
+		
+		var usuario = usuarioDAO.getUsuario(user);
+		if(usuario == null)
+			return null;
+		else if(BCrypt.checkpw(user.getSenha(), usuario.getSenha()))
+			return usuario;
+		else
+			return null;
 	}
 	
 	private String criptografarSenha(Usuario user) {
-		String msgCript = "";
-		String msg = user.getSenha();
-	    for (int i = 0; i < msg.length(); i++) {
-	        msgCript += (char) (msg.charAt(i) + 1234);
-	    }
-	    return msgCript;
+	    return BCrypt.hashpw(user.getSenha(), BCrypt.gensalt());
 	}
 }

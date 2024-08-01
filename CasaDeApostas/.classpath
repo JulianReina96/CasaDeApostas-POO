@@ -6,6 +6,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/Users/André/Downloads/postgresql-42.7.3.jar"/>
+	<classpathentry kind="lib" path="E:/eclipse-workspace/testeaposta/postgresql-42.7.3.jar"/>
+	<classpathentry kind="lib" path="E:/eclipse-workspace/testeaposta/jbcrypt-0.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

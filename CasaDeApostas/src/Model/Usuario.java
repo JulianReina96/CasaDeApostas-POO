@@ -63,6 +63,6 @@ public class Usuario {
 	
 	@Override
 	public String toString() {
-		return "Bem vindo " + this.getNome() + " Seus dados de login são\n Email: " + this.getEmail() +"\nSenha: " + this.getSenha() + "\nSeu saldo atual é de "+ this.getSaldo();
+		return "Bem vindo " + this.getNome() + " Seus dados de login são\nEmail: " + this.getEmail() +"\nSenha: " + this.getSenha() + "\nSeu saldo atual é de "+ this.getSaldo();
 	}
 }
