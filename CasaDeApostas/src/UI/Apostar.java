@@ -8,20 +8,25 @@ import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import Model.Evento;
 
 import java.awt.Font;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.swing.JRadioButton;
+import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JTextArea;
 import java.awt.Choice;
 import javax.swing.JTextField;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.text.DecimalFormat;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
@@ -107,12 +112,12 @@ public class Apostar {
 		JLabel lblEvento = new JLabel(evento.getNome());
 		lblEvento.setHorizontalAlignment(SwingConstants.CENTER);
 		lblEvento.setFont(new Font("Dialog", Font.PLAIN, 16));
-		lblEvento.setBounds(93, 11, 316, 23);
+		lblEvento.setBounds(94, 11, 316, 23);
 		frame.getContentPane().add(lblEvento);
 		
-		lblGanhos = new JLabel("");
+		lblGanhos = new JLabel("R$ 0,00");
 		lblGanhos.setHorizontalAlignment(SwingConstants.CENTER);
-		lblGanhos.setBounds(287, 128, 46, 14);
+		lblGanhos.setBounds(245, 125, 127, 14);
 		frame.getContentPane().add(lblGanhos);
 		
 		txtValorApostado = new JTextField();
@@ -131,20 +136,36 @@ public class Apostar {
 						valor = valor + c;
 					}
 					Double valorD = Double.valueOf(valor.replace(',', '.'));
-					lblGanhos.setText(valorD.toString());
+					if(getOddSelected(Collections.list(oddApostada.getElements())) != null) {
+						valorD = valorD * Double.parseDouble(getOddSelected(Collections.list(oddApostada.getElements())).getLabel());
+					}
+					lblGanhos.setText("R$ " + String.format("%.2f", valorD).replace('.', ','));
 				}
 			}
 		});
 		
-		txtValorApostado.setBounds(169, 125, 86, 20);
+		txtValorApostado.setBounds(149, 125, 86, 20);
 		frame.getContentPane().add(txtValorApostado);
 		txtValorApostado.setColumns(10);
 		
 		JLabel lblValorApostado = new JLabel("Valor");
 		lblValorApostado.setHorizontalAlignment(SwingConstants.CENTER);
 		lblValorApostado.setLabelFor(txtValorApostado);
-		lblValorApostado.setBounds(189, 107, 46, 14);
+		lblValorApostado.setBounds(169, 111, 46, 14);
 		frame.getContentPane().add(lblValorApostado);
+		
+		JLabel lblGanhosPontenciais = new JLabel("Ganhos potenciais:");
+		lblGanhosPontenciais.setHorizontalAlignment(SwingConstants.CENTER);
+		lblGanhosPontenciais.setBounds(249, 111, 123, 14);
+		frame.getContentPane().add(lblGanhosPontenciais);
+	}
 	
+	private JRadioButton getOddSelected(ArrayList<AbstractButton> arrayList) {
+	    for (AbstractButton botao : arrayList) {
+	        if (botao.isSelected()) {
+	            return (JRadioButton)botao;
+	        }
+	    }
+	    return null;
 	}
 }
