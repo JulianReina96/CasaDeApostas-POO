@@ -42,14 +42,11 @@ public class Cadastro {
         initialize();
     }
     
-    public Cadastro(boolean Admin) {
-    	this.Adm = Admin;
-        initialize();
-    }
+//    public Cadastro(boolean Admin) {
+//    	this.Adm = Admin;
+//        initialize();
+//    }
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize() {
 		frame = new JFrame();
 		frame.getContentPane().setBackground(new Color(70, 163, 255));
@@ -143,25 +140,25 @@ public class Cadastro {
 		btnCadastrar.setBounds(191, 403, 145, 39);
 		frame.getContentPane().add(btnCadastrar);
 		
-		btnMostrarSenha = new JButton(new ImageIcon("icons/eye_icon.png"));
+		btnMostrarSenha = new JButton(new ImageIcon(Cadastro.class.getResource("/Icons/eye_icon.png")));
         btnMostrarSenha.setBounds(430, 252, 26, 26);
         frame.getContentPane().add(btnMostrarSenha);
 
         // Evento do botão para alternar a exibição da senha
         btnMostrarSenha.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                toggleExibirSenha(txtSenha);
+                toggleExibirSenha(txtSenha, btnMostrarSenha);
             }
         });
 
         // Evento do botão para alternar a exibição da senha de confirmação
-        JButton btnMostrarConfirmarSenha = new JButton(new ImageIcon("icons/eye_icon.png"));
+        JButton btnMostrarConfirmarSenha = new JButton(new ImageIcon(Cadastro.class.getResource("/Icons/eye_icon.png")));
         btnMostrarConfirmarSenha.setBounds(430, 322, 26, 26);
         frame.getContentPane().add(btnMostrarConfirmarSenha);
 
         btnMostrarConfirmarSenha.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                toggleExibirSenha(txtConfirmarSenha);
+                toggleExibirSenha(txtConfirmarSenha, btnMostrarConfirmarSenha);
             }
         });
         
@@ -185,14 +182,14 @@ public class Cadastro {
 		frame.getContentPane().add(btnVoltar);
 	}
 	
-	private void toggleExibirSenha(JPasswordField campoSenha) {
+	private void toggleExibirSenha(JPasswordField campoSenha, JButton botao) {
         char echoChar = campoSenha.getEchoChar();
         if (echoChar == '*') {
             campoSenha.setEchoChar((char) 0); // Mostrar o texto real
-            btnMostrarSenha.setIcon(new ImageIcon("icons/eye_slash_icon.png")); // Ícone de olho com barra
+            botao.setIcon(new ImageIcon(Cadastro.class.getResource("/Icons/eye_slash_icon.png"))); // Ícone de olho com barra
         } else {
             campoSenha.setEchoChar('*'); // Ocultar o texto com asteriscos
-            btnMostrarSenha.setIcon(new ImageIcon("icons/eye_icon.png")); // Ícone de olho
+            botao.setIcon(new ImageIcon(Cadastro.class.getResource("/Icons/eye_icon.png"))); // Ícone de olho
         }
     }
 }

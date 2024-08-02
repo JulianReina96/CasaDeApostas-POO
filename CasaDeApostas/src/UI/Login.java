@@ -26,6 +26,7 @@ import Model.Usuario;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
+import javax.swing.Icon;
 
 
 public class Login {
@@ -152,7 +153,7 @@ public class Login {
 		lblEsqueciSenha.setBounds(192, 438, 145, 16);
 		frame.getContentPane().add(lblEsqueciSenha);
 		
-		btnMostrarSenha = new JButton(new ImageIcon("icons/eye_icon.png"));
+		btnMostrarSenha = new JButton(new ImageIcon(Login.class.getResource("/Icons/eye_icon.png")));
         btnMostrarSenha.setBounds(428, 205, 26, 26);
         frame.getContentPane().add(btnMostrarSenha);
 
@@ -169,10 +170,10 @@ public class Login {
         char echoChar = campoSenha.getEchoChar();
         if (echoChar == '*') {
             campoSenha.setEchoChar((char) 0); // Mostrar o texto real
-            btnMostrarSenha.setIcon(new ImageIcon("icons/eye_slash_icon.png")); // Ícone de olho com barra
+            btnMostrarSenha.setIcon(new ImageIcon(Login.class.getResource("/Icons/eye_slash_icon.png"))); // Ícone de olho com barra
         } else {
             campoSenha.setEchoChar('*'); // Ocultar o texto com asteriscos
-            btnMostrarSenha.setIcon(new ImageIcon("icons/eye_icon.png")); // Ícone de olho
+            btnMostrarSenha.setIcon(new ImageIcon(Login.class.getResource("/Icons/eye_icon.png"))); // Ícone de olho
         }
     }
 

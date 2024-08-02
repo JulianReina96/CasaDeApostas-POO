@@ -43,7 +43,7 @@ public class Apostar {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Apostar window = new Apostar(new Evento("Bahia vs Vitoria", LocalDate.now(), "Campeonato Brasileiro serie A", "Bahia", "Vitoria", 1.5, 2.7, 2.0));
+					Apostar window = new Apostar(new Evento("Bahia vs Vitoria", LocalDate.now(), "Bahia", "Vitoria", 1.5, 2.7, 2.0, true));
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
