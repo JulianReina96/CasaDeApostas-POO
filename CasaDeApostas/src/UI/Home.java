@@ -34,6 +34,7 @@ import javax.swing.table.TableColumn;
 import Business.EventoBusiness;
 import Model.Evento;
 import Model.Usuario;
+import javax.swing.ImageIcon;
 
 public class Home {
 
@@ -155,6 +156,8 @@ public class Home {
 
 		JLabel lblNewLabel_2 = new JLabel("Apostas");
 		lblNewLabel_2.setBackground(new Color(0, 0, 0));
+		lblNewLabel_1.setForeground(new Color(0, 0, 0));
+		lblNewLabel_1.setBackground(new Color(0, 0, 0));
 		lblNewLabel_2.setLabelFor(tbApostas);
 		lblNewLabel_2.setFont(new Font("Dialog", Font.BOLD, 24));
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
@@ -162,11 +165,20 @@ public class Home {
 		lblNewLabel_2.setBounds(1008, 71, 165, 36);
 		frame.getContentPane().add(lblNewLabel_2);
 
-		JButton btnDeposito = new JButton("Depositar");
+		JButton btnDeposito = new JButton("");
+		btnDeposito.setIcon(new ImageIcon(Home.class.getResource("/Icons/user_icon.png")));
 		btnDeposito.setForeground(new Color(0, 0, 0));
 		btnDeposito.setFont(new Font("Dialog", Font.PLAIN, 20));
-		btnDeposito.setBounds(1110, 19, 132, 36);
+		btnDeposito.setBounds(1210, 18, 36, 36);
 		frame.getContentPane().add(btnDeposito);
+		
+		JLabel lblUserName = new JLabel("Olá, " + userSession.getNome());
+		lblUserName.setForeground(new Color(255, 255, 255));
+		lblUserName.setVerticalAlignment(SwingConstants.BOTTOM);
+		lblUserName.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblUserName.setFont(new Font("Dialog", Font.BOLD, 24));
+		lblUserName.setBounds(935, 16, 267, 36);
+		frame.getContentPane().add(lblUserName);
 
 	}
 
