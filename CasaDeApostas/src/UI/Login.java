@@ -126,8 +126,7 @@ public class Login {
 						JOptionPane.showMessageDialog(frame, "Informações de login incorretas!");
 					}
 					else {
-						JOptionPane.showMessageDialog(frame, "Bem vindo a Cat'sBet " + userSession.getNome() + "!");
-						Home home = new Home();
+						Home home = new Home(userSession);
 						frame.setVisible(false);
 						home.getFrame().setVisible(true);
 					}
