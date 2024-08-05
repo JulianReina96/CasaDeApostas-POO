@@ -16,7 +16,9 @@ import javax.swing.JScrollPane;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.SwingConstants;
@@ -29,15 +31,19 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
+import Business.EventoBusiness;
 import Model.Evento;
+import Model.Usuario;
 
 public class Home {
 
 	private JFrame frame;
 	private JTable tbEventos;
 	private JTable tbApostas;
+	private Usuario userSession;
 
-	public Home() {
+	public Home(Usuario user) {
+		userSession = user;
 		initialize();
 	}
 
@@ -59,11 +65,22 @@ public class Home {
 		frame.setTitle("Cat's Bet");
 
 		SwingUtilities.invokeLater(() -> {
-			Object[][] data = { 
-					{ "Bahia vs Vitoria", "bahia\n1.75", "Bahia\n1.75", "Bahia\n1.75", "Apostar" , new Evento()},
-					{ "Bahia vs Vitoria", "Bahia\n1.75", "Bahia\n1.75", "Bahia\n1.75", "Apostar", new Evento()}, 
-					{ "Bahia vs Vitoria", "Bahia\n1.75", "Bahia\n1.75", "Bahia\n1.75", "Apostar", new Evento()} };
-			
+			EventoBusiness ctr = new EventoBusiness();
+			try {
+				List<Evento> eventos = ctr.listarEventos();
+				Object[][] data = new Object[eventos.size()][6];
+				
+			    for (int i = 0; i < eventos.size(); i++) {
+			        Evento evento = eventos.get(i);
+			        data[i] = new Object[]{
+			                evento.getNome(),
+			                evento.getTimeCasa() + " - " + evento.getOddVitoria(),
+			                evento.getOddEmpate(),
+			                evento.getTimeVisitante() + " - " + evento.getOddDerrota(),
+			                "Apostar",
+			                evento
+			        };
+			    }
 			String[] columnNames = { "Evento", "Time de Casa", "Empate", "Time de Fora", "Apostar", ""};
 
 			// Modelo da tabela
@@ -108,6 +125,10 @@ public class Home {
 			panel.add(new JScrollPane(table), BorderLayout.CENTER);
 
 			frame.getContentPane().add(panel);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		});
 		
 
@@ -179,8 +200,9 @@ public class Home {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					int row = table.convertRowIndexToModel(table.getEditingRow());
-					Evento eventoAssociado = (Evento) table.getValueAt(row, 5); 
-					System.out.println("eventoAssociado clicado na linha: " + row + eventoAssociado);
+					Evento evento = (Evento) table.getValueAt(row, 5); 
+					Apostar apostar = new Apostar(evento, userSession);
+					apostar.getFrame().setVisible(true);
 					fireEditingStopped(); // Para parar a edição
 				}
 			});
