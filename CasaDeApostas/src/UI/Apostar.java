@@ -15,16 +15,20 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import Model.Evento;
 import Model.Usuario;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Apostar {
 
 	private JFrame frame;
+//	private JFrame home;
 	private final ButtonGroup oddApostada = new ButtonGroup();
 	private Evento evento;
 	private Usuario user;
@@ -38,8 +42,12 @@ public class Apostar {
 	public Apostar(Evento evento, Usuario user) {
 		this.user = user;
 		this.evento = evento;
+		
+		
 		initialize();
 	}
+	
+	
 
 	/**
 	 * Initialize the contents of the frame.
@@ -55,6 +63,18 @@ public class Apostar {
         frame.getRootPane().setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 		
 		JButton btnNewButton = new JButton("Apostar");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+//				JOptionPane.showConfirmDialog(btnNewButton, "Tem certeza que deseja apostar?");
+//				Home novaTela = new Home(user);
+//				novaTela.getFrame().setVisible(true);
+//				home.setVisible(false);
+//				frame.setVisible(false);
+				
+				
+				
+			}
+		});
 		btnNewButton.setBounds(207, 170, 97, 23);
 		frame.getContentPane().add(btnNewButton);
 		

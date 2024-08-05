@@ -17,6 +17,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,22 +74,26 @@ public class Home {
 				
 			    for (int i = 0; i < eventos.size(); i++) {
 			        Evento evento = eventos.get(i);
-			        data[i] = new Object[]{
-			                evento.getNome(),
-			                evento.getTimeCasa() + " - " + evento.getOddVitoria(),
-			                evento.getOddEmpate(),
-			                evento.getTimeVisitante() + " - " + evento.getOddDerrota(),
-			                "Apostar",
-			                evento
-			        };
+			        if(evento.getAberta()) {
+			        	data[i] = new Object[]{
+				                evento.getNome(),
+				                evento.getDataEvento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+				                evento.getTimeCasa() + " - " + evento.getOddVitoria(),
+				                evento.getOddEmpate(),
+				                evento.getTimeVisitante() + " - " + evento.getOddDerrota(),
+				                "Apostar",
+				                evento
+				        };
+			        }
 			    }
-			String[] columnNames = { "Evento", "Time de Casa", "Empate", "Time de Fora", "Apostar", ""};
+
+			String[] columnNames = { "Evento", "Data", "Time de Casa", "Empate", "Time de Fora", "Apostar", ""};
 
 			// Modelo da tabela
 			DefaultTableModel model = new DefaultTableModel(data, columnNames) {
 			    @Override
 			    public boolean isCellEditable(int row, int column) {
-			        return column == 4; // Torna a coluna dos botões editável
+			        return column == 5; // Torna a coluna dos botões editável
 			    }
 			};
 
@@ -116,8 +121,8 @@ public class Home {
 		    }
 
 			// Configuração do renderizador e editor para a coluna do botão
-			table.getColumnModel().getColumn(4).setCellRenderer(new ButtonRenderer());
-			table.getColumnModel().getColumn(4).setCellEditor(new ButtonEditor(new JCheckBox()));
+			table.getColumnModel().getColumn(5).setCellRenderer(new ButtonRenderer());
+			table.getColumnModel().getColumn(5).setCellEditor(new ButtonEditor(new JCheckBox()));
 
 			JPanel panel = new JPanel(new BorderLayout());
 			panel.setSize(866, 564);
@@ -212,7 +217,7 @@ public class Home {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					int row = table.convertRowIndexToModel(table.getEditingRow());
-					Evento evento = (Evento) table.getValueAt(row, 5); 
+					Evento evento = (Evento) table.getValueAt(row, 6); 
 					Apostar apostar = new Apostar(evento, userSession);
 					apostar.getFrame().setVisible(true);
 					fireEditingStopped(); // Para parar a edição
