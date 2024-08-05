@@ -23,8 +23,8 @@ public class EventoPostgreDAO implements EventoDAO{
 					rs.getString("timeCasa"), 
 					rs.getString("timeVisitante"), 
 					rs.getDouble("oddCasa"), 
-					rs.getDouble("oddEmpate"), 
 					rs.getDouble("oddVisitante"),
+					rs.getDouble("oddEmpate"), 
 					rs.getBoolean("aberta"));
 		}
 		
@@ -43,8 +43,8 @@ public class EventoPostgreDAO implements EventoDAO{
 					rs.getString("timeCasa"), 
 					rs.getString("timeVisitante"), 
 					rs.getDouble("oddCasa"), 
-					rs.getDouble("oddEmpate"), 
 					rs.getDouble("oddVisitante"),
+					rs.getDouble("oddEmpate"), 
 					rs.getBoolean("aberta"));
 			
 			eventos.add(e);
