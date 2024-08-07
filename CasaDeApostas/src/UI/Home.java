@@ -170,6 +170,7 @@ public class Home {
 		lblNewLabel_2.setBounds(1008, 71, 165, 36);
 		frame.getContentPane().add(lblNewLabel_2);
 
+			
 		JButton btnDeposito = new JButton("");
 		btnDeposito.setIcon(new ImageIcon(Home.class.getResource("/Icons/user_icon.png")));
 		btnDeposito.setForeground(new Color(0, 0, 0));
@@ -184,6 +185,13 @@ public class Home {
 		lblUserName.setFont(new Font("Dialog", Font.BOLD, 24));
 		lblUserName.setBounds(935, 16, 267, 36);
 		frame.getContentPane().add(lblUserName);
+		
+		JLabel lblSaldo = new JLabel("Saldo R$ " + String.format("%.2f", userSession.getSaldo()).replace('.', ','));
+		lblSaldo.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblSaldo.setForeground(new Color(255, 255, 255));
+		lblSaldo.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblSaldo.setBounds(1081, 60, 165, 14);
+		frame.getContentPane().add(lblSaldo);
 
 	}
 
@@ -218,7 +226,7 @@ public class Home {
 				public void actionPerformed(ActionEvent e) {
 					int row = table.convertRowIndexToModel(table.getEditingRow());
 					Evento evento = (Evento) table.getValueAt(row, 6); 
-					Apostar apostar = new Apostar(evento, userSession);
+					Apostar apostar = new Apostar(evento, userSession, frame);
 					apostar.getFrame().setVisible(true);
 					fireEditingStopped(); // Para parar a edição
 				}

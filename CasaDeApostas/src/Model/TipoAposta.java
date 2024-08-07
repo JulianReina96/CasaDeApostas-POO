@@ -4,7 +4,8 @@ public class TipoAposta {
 	private int ID;
 	private String descricao;
 	
-	
+	public TipoAposta() {
+	}
 	
 	public TipoAposta(int ID, String decricao) {
 		this.ID = ID;

@@ -6,15 +6,15 @@ public class Aposta {
 	private int ID;
 	private Usuario usuario;
 	private Evento evento;
-	private TipoAposta tipoAposta;
-	private StatusAposta statusAposta;
+	private TipoAposta tipoAposta = new TipoAposta();
+	private StatusAposta statusAposta = new StatusAposta();
 	private double valor;
 	private LocalDate dataAposta;
 	
 	
 	public Aposta() {}
 	
-	public Aposta(Usuario usuario, Evento evento, int tipoApostaID, double valor) {
+	public Aposta(Usuario usuario, Evento evento, int tipoApostaID,  double valor) {
 		this.usuario = usuario;
 		this.evento = evento;
 		this.tipoAposta.setID(tipoApostaID);
