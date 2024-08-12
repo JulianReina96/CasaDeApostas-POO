@@ -18,7 +18,7 @@ public class ApostaPostgreDAO implements ApostaDAO {
 	@Override
 	public List<Aposta> listaApostas(int usuarioID) throws SQLException {
 		PreparedStatement ps = ConexaoSingleton.getInstance().getConexao().prepareStatement("SELECT "
-	    		+ "U.ID AS USUARIOID, U.NOME AS NOMEUSER, U.EMAIL, U.SENHA, U.ADMINISTRADOR, "
+	    		+ "U.ID AS USUARIOID, U.NOME AS NOMEUSER, U.EMAIL, U.SENHA, U.ADMINISTRADOR, U.SALDO, "
 	    		+ "E.ID AS EVENTOID, E.NOME AS NOMEEVENTO, E.DATA, E.TIMECASA, E.TIMEVISITANTE, E.ODDCASA, E.ODDEMPATE, E.ODDVISITANTE, E.Aberta, "
 	    		+ "TA.ID AS TIPOAPOSTAID, TA.DESCRICAO AS TIPODESCRICAO, "
 	    		+ "SA.ID AS STATUSAPOSTAID, SA.DESCRICAO AS STATUSDESCRICAO, "
@@ -42,8 +42,8 @@ public class ApostaPostgreDAO implements ApostaDAO {
 					rs.getBoolean("ADMINISTRADOR"));
 	    	
 	    	
-	    	Evento evento = new Evento(rs.getInt("ID"), 
-					rs.getString("NOME"), 
+	    	Evento evento = new Evento(rs.getInt("EVENTOID"), 
+					rs.getString("NOMEEVENTO"), 
 					rs.getDate("DATA").toLocalDate(), 
 					rs.getString("timeCasa"), 
 					rs.getString("timeVisitante"), 
