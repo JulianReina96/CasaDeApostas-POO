@@ -4,6 +4,8 @@ public class StatusAposta {
 	private int ID;
 	private String descricao;
 	
+	public StatusAposta() {
+	}
 	
 	public StatusAposta(int ID, String decricao) {
 		this.ID = ID;

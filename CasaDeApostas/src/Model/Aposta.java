@@ -6,15 +6,15 @@ public class Aposta {
 	private int ID;
 	private Usuario usuario;
 	private Evento evento;
-	private TipoAposta tipoAposta;
-	private StatusAposta statusAposta;
+	private TipoAposta tipoAposta = new TipoAposta();
+	private StatusAposta statusAposta = new StatusAposta();
 	private double valor;
 	private LocalDate dataAposta;
 	
 	
 	public Aposta() {}
 	
-	public Aposta(Usuario usuario, Evento evento, int tipoApostaID, double valor) {
+	public Aposta(Usuario usuario, Evento evento, int tipoApostaID,  double valor) {
 		this.usuario = usuario;
 		this.evento = evento;
 		this.tipoAposta.setID(tipoApostaID);
@@ -65,5 +65,23 @@ public class Aposta {
 		return dataAposta;
 	}
 	
+	public double getOddApostada() {
+		
+		switch(tipoAposta.getID()) {
+		case 1:
+			return this.evento.getOddVitoria();
+		case 2:
+			return this.evento.getOddEmpate();
+		case 3:
+			return this.evento.getOddDerrota();
+			default:
+				return 0;
+				//verificar tratamento caso valor inserido seja incorreto
+		}
+
+		}
+		
+	}
 	
-}
+	
+

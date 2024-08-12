@@ -19,14 +19,15 @@ public class ApostaPostgreDAO implements ApostaDAO {
 	public List<Aposta> listaApostas(int usuarioID) throws SQLException {
 		PreparedStatement ps = ConexaoSingleton.getInstance().getConexao().prepareStatement("SELECT "
 	    		+ "U.ID AS USUARIOID, U.NOME AS NOMEUSER, U.EMAIL, U.SENHA, U.ADMINISTRADOR, "
-	    		+ "E.ID AS EVENTOID, E.NOME AS NOMEEVENTO, E.DATAEVENTO, E.DESCRICAO AS DESCRICAOEVENTO, E.TIMECASA, E.TIMEVISITANTE, E.ODDVITORIA, E.ODDDERROTA, E.ODDEMPATE, "
+	    		+ "E.ID AS EVENTOID, E.NOME AS NOMEEVENTO, E.DATA, E.TIMECASA, E.TIMEVISITANTE, E.ODDCASA, E.ODDEMPATE, E.ODDVISITANTE, E.Aberta, "
 	    		+ "TA.ID AS TIPOAPOSTAID, TA.DESCRICAO AS TIPODESCRICAO, "
 	    		+ "SA.ID AS STATUSAPOSTAID, SA.DESCRICAO AS STATUSDESCRICAO, "
-	    		+ "A.ID AS APOSTAID, A.VALOR, A.DATAAPOSTA"
-	    		+ "FROM APOSTAS AS A "
-	    		+ "INNER JOIN TIPOAPOSTA AS TA ON TA.ID = A.TIPOAPOSTAID"
-	    		+ "INNER JOIN STATUSAPOSTA AS SA ON SA.ID = A.STATUSAPOSTAID"
-	    		+ "INNER JOIN USUARIO AS U ON U.ID = A.USUARIOID"
+	    		+ "A.ID AS APOSTAID, A.VALOR, A.DATAAPOSTA "
+	    		+ "FROM APOSTA AS A "
+	    		+ "INNER JOIN TIPOAPOSTA AS TA ON TA.ID = A.TIPOAPOSTAID "
+	    		+ "INNER JOIN STATUSAPOSTA AS SA ON SA.ID = A.STATUSAPOSTAID "
+	    		+ "INNER JOIN EVENTO AS E ON E.ID = A.EVENTOID "
+	    		+ "INNER JOIN USUARIO AS U ON U.ID = A.USUARIOID " 
 	    		+ "WHERE A.USUARIOID = ?");
 		ps.setInt(1, usuarioID);
 	    ResultSet rs = ps.executeQuery();
@@ -41,15 +42,15 @@ public class ApostaPostgreDAO implements ApostaDAO {
 					rs.getBoolean("ADMINISTRADOR"));
 	    	
 	    	
-	    	Evento evento = new Evento(rs.getInt("EVENTOID"), 
-					rs.getString("NOMEEVENTO"), 
-					rs.getDate("DATAEVENTO").toLocalDate(), 
-					rs.getString("DESCRICAOEVENTO"), 
-					rs.getString("TIMECASA"), 
-					rs.getString("TIMEVISITANTE"), 
-					rs.getDouble("ODDVITORIA"), 
-					rs.getDouble("ODDDERROTA"), 
-					rs.getDouble("ODDEMPATE"));
+	    	Evento evento = new Evento(rs.getInt("ID"), 
+					rs.getString("NOME"), 
+					rs.getDate("DATA").toLocalDate(), 
+					rs.getString("timeCasa"), 
+					rs.getString("timeVisitante"), 
+					rs.getDouble("oddCasa"), 
+					rs.getDouble("oddEmpate"), 
+					rs.getDouble("oddVisitante"),
+					rs.getBoolean("aberta"));
 	    	
 	    	
 	    	TipoAposta tipo = new TipoAposta(
@@ -82,14 +83,15 @@ public class ApostaPostgreDAO implements ApostaDAO {
 	public Aposta getAposta(int apostaID) throws SQLException {
 	    PreparedStatement ps = ConexaoSingleton.getInstance().getConexao().prepareStatement("SELECT "
 	    		+ "U.ID AS USUARIOID, U.NOME AS NOMEUSER, U.EMAIL, U.SENHA, U.ADMINISTRADOR, "
-	    		+ "E.ID AS EVENTOID, E.NOME AS NOMEEVENTO, E.DATAEVENTO, E.DESCRICAO AS DESCRICAOEVENTO, E.TIMECASA, E.TIMEVISITANTE, E.ODDVITORIA, E.ODDDERROTA, E.ODDEMPATE, "
+	    		+ "E.ID AS EVENTOID, E.NOME AS NOMEEVENTO, E.DATA, E.TIMECASA, E.TIMEVISITANTE, E.ODDCASA, E.ODDEMPATE, E.ODDVISITANTE, E.Aberta, "
 	    		+ "TA.ID AS TIPOAPOSTAID, TA.DESCRICAO AS TIPODESCRICAO, "
 	    		+ "SA.ID AS STATUSAPOSTAID, SA.DESCRICAO AS STATUSDESCRICAO, "
-	    		+ "A.ID AS APOSTAID, A.VALOR, A.DATAAPOSTA"
-	    		+ "FROM APOSTAS AS A "
-	    		+ "INNER JOIN TIPOAPOSTA AS TA ON TA.ID = A.TIPOAPOSTAID"
-	    		+ "INNER JOIN STATUSAPOSTA AS SA ON SA.ID = A.STATUSAPOSTAID"
-	    		+ "INNER JOIN USUARIO AS U ON U.ID = A.USUARIOID"
+	    		+ "A.ID AS APOSTAID, A.VALOR, A.DATAAPOSTA "
+	    		+ "FROM APOSTA AS A "
+	    		+ "INNER JOIN TIPOAPOSTA AS TA ON TA.ID = A.TIPOAPOSTAID "
+	    		+ "INNER JOIN STATUSAPOSTA AS SA ON SA.ID = A.STATUSAPOSTAID "
+	    		+ "INNER JOIN EVENTO AS E ON E.ID = A.EVENTOID "
+	    		+ "INNER JOIN USUARIO AS U ON U.ID = A.USUARIOID " 
 	    		+ "WHERE A.ID = ?");
 	    ps.setInt(1, apostaID);
 	    ResultSet rs = ps.executeQuery();
@@ -104,15 +106,15 @@ public class ApostaPostgreDAO implements ApostaDAO {
 					rs.getBoolean("ADMINISTRADOR"));
 	    	
 	    	
-	    	Evento evento = new Evento(rs.getInt("EVENTOID"), 
-					rs.getString("NOMEEVENTO"), 
-					rs.getDate("DATAEVENTO").toLocalDate(), 
-					rs.getString("DESCRICAOEVENTO"), 
-					rs.getString("TIMECASA"), 
-					rs.getString("TIMEVISITANTE"), 
-					rs.getDouble("ODDVITORIA"), 
-					rs.getDouble("ODDDERROTA"), 
-					rs.getDouble("ODDEMPATE"));
+	    	Evento evento = new Evento(rs.getInt("ID"), 
+					rs.getString("NOME"), 
+					rs.getDate("DATA").toLocalDate(), 
+					rs.getString("timeCasa"), 
+					rs.getString("timeVisitante"), 
+					rs.getDouble("oddCasa"), 
+					rs.getDouble("oddEmpate"), 
+					rs.getDouble("oddVisitante"),
+					rs.getBoolean("aberta"));
 	    	
 	    	
 	    	TipoAposta tipo = new TipoAposta(
