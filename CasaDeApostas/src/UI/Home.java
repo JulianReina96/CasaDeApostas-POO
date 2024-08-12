@@ -10,6 +10,7 @@ import java.awt.Component;
 
 import javax.swing.JTable;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -71,7 +72,14 @@ public class Home {
 			try {
 				List<Evento> eventos = ctr.listarEventos();
 				Object[][] data = new Object[eventos.size()][6];
-				
+				String nomeBotao = "";
+				if(userSession.isAdministrador()) {
+					nomeBotao = "Editar";
+				}
+				else {
+					nomeBotao = "Apostar";
+				}
+				 
 			    for (int i = 0; i < eventos.size(); i++) {
 			        Evento evento = eventos.get(i);
 			        if(evento.getAberta()) {
@@ -81,13 +89,13 @@ public class Home {
 				                evento.getTimeCasa() + " - " + evento.getOddVitoria(),
 				                evento.getOddEmpate(),
 				                evento.getTimeVisitante() + " - " + evento.getOddDerrota(),
-				                "Apostar",
+				                nomeBotao,
 				                evento
 				        };
 			        }
 			    }
 
-			String[] columnNames = { "Evento", "Data", "Time de Casa", "Empate", "Time de Fora", "Apostar", ""};
+			String[] columnNames = { "Evento", "Data", "Time de Casa", "Empate", "Time de Fora", nomeBotao, ""};
 
 			// Modelo da tabela
 			DefaultTableModel model = new DefaultTableModel(data, columnNames) {
@@ -172,6 +180,10 @@ public class Home {
 
 			
 		JButton btnDeposito = new JButton("");
+		btnDeposito.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		btnDeposito.setIcon(new ImageIcon(Home.class.getResource("/Icons/user_icon.png")));
 		btnDeposito.setForeground(new Color(0, 0, 0));
 		btnDeposito.setFont(new Font("Dialog", Font.PLAIN, 20));
@@ -200,7 +212,12 @@ public class Home {
 
 		public ButtonRenderer() {
 			setOpaque(true);
-			setText("Apostar");
+			if(userSession.isAdministrador()) {
+				setText("Editar");
+			}
+			else {
+				setText("Apostar");
+			}
 		}
 
 		@Override
@@ -226,9 +243,16 @@ public class Home {
 				public void actionPerformed(ActionEvent e) {
 					int row = table.convertRowIndexToModel(table.getEditingRow());
 					Evento evento = (Evento) table.getValueAt(row, 6); 
-					Apostar apostar = new Apostar(evento, userSession, frame);
-					apostar.getFrame().setVisible(true);
-					fireEditingStopped(); // Para parar a edição
+					if(!userSession.isAdministrador()) {
+						Apostar apostar = new Apostar(evento, userSession, frame);
+						apostar.getFrame().setVisible(true);
+						fireEditingStopped(); // Para parar a edição
+					}
+					else {
+						JOptionPane.showMessageDialog(frame, "Ainda não foi implementado");
+						fireEditingStopped();
+					}
+					
 				}
 			});
 
@@ -239,7 +263,13 @@ public class Home {
 		public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row,
 				int column) {
 			this.table = table;
-			button.setText("Apostar");
+			if(userSession.isAdministrador()) {
+				button.setText("Editar");
+			}
+			else {
+				button.setText("Apostar");
+			}
+			
 			return button;
 		}
 
