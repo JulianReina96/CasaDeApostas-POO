@@ -141,6 +141,7 @@ public class Login {
 		btnLogin.setFont(new Font("Dialog", Font.BOLD, 18));
 		btnLogin.setBounds(192, 292, 145, 39);
 		frame.getContentPane().add(btnLogin);
+		frame.getRootPane().setDefaultButton(btnLogin);
 		
 		JLabel lblEsqueciSenha = new JLabel("<html><u>Esqueci minha senha</u></html>");
 		lblEsqueciSenha.addMouseListener(new MouseAdapter() {
