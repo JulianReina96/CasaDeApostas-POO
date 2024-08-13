@@ -37,6 +37,9 @@ import Business.EventoBusiness;
 import Model.Evento;
 import Model.Usuario;
 import javax.swing.ImageIcon;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JMenu;
 
 public class Home {
 
@@ -150,6 +153,62 @@ public class Home {
 		tbApostas.setBounds(916, 106, 338, 564);
 		frame.getContentPane().add(tbApostas);
 
+		
+		JMenuBar menuBar = new JMenuBar();
+		menuBar.setSize(44, 36);
+		menuBar.setLocation(1210, 18);
+
+        JMenu menuOpcoes = new JMenu("");
+               
+        menuOpcoes.setIcon(new ImageIcon(Home.class.getResource("/Icons/user_icon.png")));
+
+        JMenuItem itemConta = new JMenuItem("Conta");
+        menuOpcoes.add(itemConta);
+        
+        if(userSession.isAdministrador()) {
+        	
+        JMenuItem itemAdmin = new JMenuItem("Cadastrar Admin");
+        
+        itemAdmin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Cadastro cadastro = new Cadastro(true);
+				
+				cadastro.getFrame().setVisible(true);
+			}
+		});
+        
+        menuOpcoes.add(itemAdmin);
+        }
+        else {
+        JMenuItem itemApostas = new JMenuItem("Minhas Apostas");
+        menuOpcoes.add(itemApostas);
+        }
+
+        
+        JMenuItem itemSair = new JMenuItem("Sair");
+        itemSair.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Login login = new Login();
+			frame.setVisible(false);
+				
+				login.getFrame().setVisible(true);
+			}
+		});
+        menuOpcoes.add(itemSair);
+        
+        
+        
+      
+        menuBar.add(menuOpcoes);
+
+        frame.getContentPane().add(menuBar);
+        //MENU OPÇÕES CADASTRAR EVENTOS 
+		
+		
+		
+		
+		
+		
 		JLabel lblNewLabel = new JLabel("Cat's Bet");
 		lblNewLabel.setForeground(new Color(255, 255, 255));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -177,18 +236,6 @@ public class Home {
 		lblNewLabel_2.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblNewLabel_2.setBounds(1008, 71, 165, 36);
 		frame.getContentPane().add(lblNewLabel_2);
-
-			
-		JButton btnDeposito = new JButton("");
-		btnDeposito.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnDeposito.setIcon(new ImageIcon(Home.class.getResource("/Icons/user_icon.png")));
-		btnDeposito.setForeground(new Color(0, 0, 0));
-		btnDeposito.setFont(new Font("Dialog", Font.PLAIN, 20));
-		btnDeposito.setBounds(1210, 18, 36, 36);
-		frame.getContentPane().add(btnDeposito);
 		
 		JLabel lblUserName = new JLabel("Olá, " + userSession.getNome());
 		lblUserName.setForeground(new Color(255, 255, 255));

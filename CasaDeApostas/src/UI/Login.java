@@ -106,7 +106,7 @@ public class Login {
 		btnCadastro.setForeground(new Color(255, 255, 255));
 		btnCadastro.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Cadastro cadastro = new Cadastro();
+				Cadastro cadastro = new Cadastro(false);//ajustar pra receber user ao login
 				frame.setVisible(false);
 				cadastro.getFrame().setVisible(true);
 			}
