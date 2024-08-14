@@ -181,14 +181,14 @@ public class Home {
         
         JMenuItem itemNovoEvento = new JMenuItem("Adicionar Evento");
         
-        itemNovoEvento.addActionListener(new ActionListener() {
+        /*itemNovoEvento.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				AdicionarEvento evento = new AdicionarEvento();
 				
 				evento.getFrame().setVisible(true);
 			}
 		});
-        
+        */
         menuOpcoes.add(itemNovoEvento);
         }
         else {
@@ -263,6 +263,19 @@ public class Home {
 		lblSaldo.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblSaldo.setBounds(1081, 60, 165, 14);
 		frame.getContentPane().add(lblSaldo);
+		
+		
+		//Botão que chama o histórico de apostas do usuário
+		JButton HistApostBtn = new JButton("Histórico de Apostas");
+		HistApostBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				HistoricoApostas historicoapostas = new HistoricoApostas(userSession);
+				frame.setVisible(false);
+				historicoapostas.getFrame().setVisible(true);
+			}
+		});
+		HistApostBtn.setBounds(779, 24, 158, 21);
+		frame.getContentPane().add(HistApostBtn);
 
 	}
 
