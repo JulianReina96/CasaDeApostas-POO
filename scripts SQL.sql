@@ -47,4 +47,4 @@ CREATE TABLE Aposta (
 
 INSERT INTO TIPOAPOSTA (Descricao) VALUES ('Vitoria da casa'), ('Empate'), ('Derrota da casa');
 INSERT INTO STATUSAPOSTA (Descricao) VALUES ('Pendente'), ('Vencida'), ('Perdida');
-INSERT INTO usuario(nome, email, senha, saldo, administrador) VALUES ('Owner', 'admin@catsbet.com', '$2a$10$DD4AhJ/s0Fx8FV75Yxd5I.T3l2OX1d1zFCgQ9NtIoNH3AOYtVa7ja' 1000.0, true);
+INSERT INTO usuario(nome, email, senha, saldo, administrador) VALUES ('Owner', 'admin@catsbet.com', '$2a$10$DD4AhJ/s0Fx8FV75Yxd5I.T3l2OX1d1zFCgQ9NtIoNH3AOYtVa7ja', 1000.0, true);
