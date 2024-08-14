@@ -101,7 +101,7 @@ public class Login {
 		
 		JButton btnCadastro = new JButton("Cadastrar-se");
 		btnCadastro.setMnemonic('C');
-		btnCadastro.setFont(new Font("Dialog", Font.BOLD, 18));
+		btnCadastro.setFont(new Font("Dialog", Font.BOLD, 16));
 		btnCadastro.setBackground(new Color(0, 128, 192));
 		btnCadastro.setForeground(new Color(255, 255, 255));
 		btnCadastro.addActionListener(new ActionListener() {

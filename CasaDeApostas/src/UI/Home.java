@@ -178,6 +178,18 @@ public class Home {
 		});
         
         menuOpcoes.add(itemAdmin);
+        
+        JMenuItem itemNovoEvento = new JMenuItem("Adicionar Evento");
+        
+        itemNovoEvento.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				AdicionarEvento evento = new AdicionarEvento();
+				
+				evento.getFrame().setVisible(true);
+			}
+		});
+        
+        menuOpcoes.add(itemNovoEvento);
         }
         else {
         JMenuItem itemApostas = new JMenuItem("Minhas Apostas");
