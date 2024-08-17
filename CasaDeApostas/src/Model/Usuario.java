@@ -53,8 +53,8 @@ public class Usuario {
 		return this.saldo;
 	}
 	
-	public double setSaldo() {
-		return this.saldo;
+	public void setSaldo(double saldo) {
+		this.saldo = saldo;
 	}
 	
 	public boolean isAdministrador() {

@@ -82,8 +82,9 @@ public class Apostar {
 					else {
 						ApostaBusiness ctr = new ApostaBusiness();
 						try {
-							ctr.reaizarAposta(new Aposta(user, evento, Integer.valueOf(botao.getName()), Double.valueOf(valor.replace(',', '.'))));
+							var aposta = ctr.reaizarAposta(new Aposta(user, evento, Integer.valueOf(botao.getName()), Double.valueOf(valor.replace(',', '.'))));
 							JOptionPane.showMessageDialog(frame, "Aposta realizada com sucesso!");
+							user.setSaldo(user.getSaldo() - aposta.getValor());
 							Home novaTela = new Home(user);
 							frame.setVisible(false);
 							novaTela.getFrame().setVisible(true);

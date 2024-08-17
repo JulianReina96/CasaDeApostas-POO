@@ -1,5 +1,6 @@
 package DAO;
 
+import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import DTOs.ApostaUsuarioDTO;
 import Model.Evento;
 
 public class EventoPostgreDAO implements EventoDAO{
@@ -103,4 +105,64 @@ public class EventoPostgreDAO implements EventoDAO{
 		return false;
 	}
 
+	
+	public boolean finalizarEvento(int eventoID, int tipoVencendorID) throws SQLException {
+	    Connection conn = ConexaoSingleton.getInstance().getConexao();
+	    conn.setAutoCommit(false); // Desabilita o autocommit
+
+	    try {
+	        PreparedStatement ps1 = conn.prepareStatement("update evento set aberta = false where id = ?");
+	        ps1.setInt(1, eventoID);
+	        ps1.executeUpdate();
+
+	        PreparedStatement ps2 = conn.prepareStatement("update aposta set statusapostaid = 2 where eventoid = ? and tipoapostaid = ?");
+	        ps2.setInt(1, eventoID);
+	        ps2.setInt(2, tipoVencendorID);
+	        ps2.executeUpdate();
+	        
+	        PreparedStatement ps3 = conn.prepareStatement("update aposta set statusapostaid = 3 where eventoid = ? and tipoapostaid <> ?");
+	        ps3.setInt(1, eventoID);
+	        ps3.setInt(2, tipoVencendorID);
+	        ps3.executeUpdate();
+	        	        
+	        PreparedStatement ps4 = conn.prepareStatement("select usuarioID, valor, "
+	        		+ "	case when tipoapostaid = 1 then e.oddcasa "
+	        		+ "	when tipoapostaid = 2 then e.oddempate "
+	        		+ "	else e.oddvisitante "
+	        		+ "	end "
+	        		+ "	from aposta as a "
+	        		+ "	inner join evento as e "
+	        		+ "	on e.id = a.eventoid "
+	        		+ "	where eventoid = ? and tipoapostaid = ?");
+	        ps4.setInt(1, eventoID);
+	        ps4.setInt(2, tipoVencendorID);
+	        var rs =  ps4.executeQuery();
+	        
+	        List<ApostaUsuarioDTO> usuarios = new ArrayList<ApostaUsuarioDTO>();
+	        while(rs.next()) {
+	        	usuarios.add(new ApostaUsuarioDTO(rs.getInt(1), rs.getDouble(2), rs.getDouble(3)));
+	        }
+	        rs.close();
+	        usuarios.forEach(x -> {
+	        	try {
+					PreparedStatement ps5 = conn.prepareStatement("update usuario set saldo = saldo + (? * ?) where id = ?");
+					ps5.setDouble(1, x.getValor());
+					ps5.setDouble(2, x.getOdd());
+					ps5.setInt(3, x.getUsuarioID());
+					ps5.executeUpdate();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+	        });
+	        
+	        
+	        conn.commit();
+	        return true;
+	    } catch (SQLException e) {
+	    	conn.rollback();
+	    	throw e;
+	    } finally {
+	    	conn.setAutoCommit(true); // Reativa o autocommit
+	    }
+	}
 }

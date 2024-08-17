@@ -11,4 +11,5 @@ public interface EventoDAO {
 	public boolean cadastrarEvento(Evento evento) throws SQLException;
 	public Evento editarEvento(Evento evento) throws SQLException; 
 	public boolean deletarEvento(Evento evento) throws SQLException;
+	public boolean finalizarEvento(int eventoID, int tipoVencendorID) throws SQLException;
 }

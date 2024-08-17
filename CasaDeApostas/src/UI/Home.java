@@ -74,7 +74,7 @@ public class Home {
 			EventoBusiness ctr = new EventoBusiness();
 			try {
 				List<Evento> eventos = ctr.listarEventos();
-				Object[][] data = new Object[eventos.size()][6];
+				Object[][] data = new Object[(int) eventos.stream().filter(x -> x.getAberta()).count()][6];
 				String nomeBotao = "";
 				if(userSession.isAdministrador()) {
 					nomeBotao = "Editar";
@@ -321,7 +321,8 @@ public class Home {
 						fireEditingStopped(); // Para parar a edição
 					}
 					else {
-						JOptionPane.showMessageDialog(frame, "Ainda não foi implementado");
+						EditarEvento editEvent = new EditarEvento(evento, frame, userSession);
+						editEvent.getFrame().setVisible(true);
 						fireEditingStopped();
 					}
 					
