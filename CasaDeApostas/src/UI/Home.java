@@ -83,10 +83,11 @@ public class Home {
 					nomeBotao = "Apostar";
 				}
 				 
+				int count = 0;
 			    for (int i = 0; i < eventos.size(); i++) {
 			        Evento evento = eventos.get(i);
 			        if(evento.getAberta()) {
-			        	data[i] = new Object[]{
+			        	data[count] = new Object[]{
 				                evento.getNome(),
 				                evento.getDataEvento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
 				                evento.getTimeCasa() + " - " + evento.getOddVitoria(),
@@ -95,6 +96,7 @@ public class Home {
 				                nomeBotao,
 				                evento
 				        };
+			        	count++;
 			        }
 			    }
 
@@ -159,8 +161,11 @@ public class Home {
 		menuBar.setLocation(1210, 18);
 
         JMenu menuOpcoes = new JMenu("");
-               
-        menuOpcoes.setIcon(new ImageIcon(Home.class.getResource("/Icons/user_icon.png")));
+        
+        if(Home.class.getResource("/Icons/user_icon.png") != null) {
+        	menuOpcoes.setIcon(new ImageIcon(Home.class.getResource("/Icons/user_icon.png")));
+        }
+        
 
         JMenuItem itemConta = new JMenuItem("Conta");
         menuOpcoes.add(itemConta);
@@ -193,6 +198,14 @@ public class Home {
         }
         else {
         JMenuItem itemApostas = new JMenuItem("Minhas Apostas");
+        itemApostas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				HistoricoApostas historicoapostas = new HistoricoApostas(userSession);
+				frame.setVisible(false);
+				historicoapostas.getFrame().setVisible(true);
+			}
+		});
+        
         menuOpcoes.add(itemApostas);
         }
 
@@ -263,19 +276,6 @@ public class Home {
 		lblSaldo.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblSaldo.setBounds(1081, 60, 165, 14);
 		frame.getContentPane().add(lblSaldo);
-		
-		
-		//Botão que chama o histórico de apostas do usuário
-		JButton HistApostBtn = new JButton("Histórico de Apostas");
-		HistApostBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				HistoricoApostas historicoapostas = new HistoricoApostas(userSession);
-				frame.setVisible(false);
-				historicoapostas.getFrame().setVisible(true);
-			}
-		});
-		HistApostBtn.setBounds(779, 24, 158, 21);
-		frame.getContentPane().add(HistApostBtn);
 
 	}
 

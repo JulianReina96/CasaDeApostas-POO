@@ -72,57 +72,55 @@ public class HistoricoApostas {
 			try {
 				List<Aposta> apostas = ctr.listarApostas(userSession.getID());
 				Object[][] data = new Object[apostas.size()][6];
-			    for (int i = 0; i < apostas.size(); i++) {
-			        Aposta aposta = apostas.get(i);
+				for (int i = 0; i < apostas.size(); i++) {
+					Aposta aposta = apostas.get(i);
 
-			        	data[i] = new Object[]{
-				                aposta.getEvento().getNome(),
-				                aposta.getEvento().getDataEvento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
-				                aposta.getTipoAposta().getDescricao(),
-				                "R$ " + aposta.getValor(),
-				                aposta.getStatusAposta().getDescricao()
-				        };
-			    }
+					data[i] = new Object[] { aposta.getEvento().getNome(),
+							aposta.getEvento().getDataEvento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+							aposta.getTipoAposta().getDescricao(), "R$ " + aposta.getValor(),
+							aposta.getStatusAposta().getDescricao() };
+				}
 
-			String[] columnNames = { "Evento", "Data do Evento", "Tipo de Aposta", "Valor Apostado","Status"};
+				String[] columnNames = { "Evento", "Data do Evento", "Tipo de Aposta", "Valor Apostado", "Status" };
 
-			// Modelo da tabela
-			DefaultTableModel model = new DefaultTableModel(data, columnNames);
+				// Modelo da tabela
+				DefaultTableModel model = new DefaultTableModel(data, columnNames);
 
-			// Criação da tabela
-			JTable table = new JTable(model);
-			table.setRowHeight(30); // Ajusta a altura da linha
+				// Criação da tabela
+				JTable table = new JTable(model);
+				table.setRowHeight(30); // Ajusta a altura da linha
 
-			// Ocultar a última coluna
-			/*
-			TableColumn lastColumn = table.getColumnModel().getColumn(table.getColumnCount() - 1);
-			lastColumn.setMinWidth(0);
-			lastColumn.setMaxWidth(0);
-			lastColumn.setPreferredWidth(0);
-			*/
-			
-			// Centraliza os dados em todas as colunas
-		    for (int i = 0; i < table.getColumnCount(); i++) {
-		        table.getColumnModel().getColumn(i).setCellRenderer(new DefaultTableCellRenderer() {
-		            @Override
-		            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-		                    boolean hasFocus, int row, int column) {
-		                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-		                ((JLabel) c).setHorizontalAlignment(SwingConstants.CENTER);
-		                return c;
-		            }
-		        });
-		    }
+				// Ocultar a última coluna
+				/*
+				 * TableColumn lastColumn =
+				 * table.getColumnModel().getColumn(table.getColumnCount() - 1);
+				 * lastColumn.setMinWidth(0); lastColumn.setMaxWidth(0);
+				 * lastColumn.setPreferredWidth(0);
+				 */
 
-			JPanel panel = new JPanel(new BorderLayout());
-			panel.setSize(866, 564);
-			panel.setLocation(20, 106);
+				// Centraliza os dados em todas as colunas
+				for (int i = 0; i < table.getColumnCount(); i++) {
+					table.getColumnModel().getColumn(i).setCellRenderer(new DefaultTableCellRenderer() {
+						@Override
+						public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+								boolean hasFocus, int row, int column) {
+							Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row,
+									column);
+							((JLabel) c).setHorizontalAlignment(SwingConstants.CENTER);
+							return c;
+						}
+					});
+				}
 
-			JScrollPane scrollPane = new JScrollPane(table);
-			scrollPane.setLocation(2, 0);
-			panel.add(scrollPane, BorderLayout.CENTER);
+				JPanel panel = new JPanel(new BorderLayout());
+				panel.setSize(866, 564);
+				panel.setLocation(20, 106);
 
-			frame.getContentPane().add(panel);
+				JScrollPane scrollPane = new JScrollPane(table);
+				scrollPane.setLocation(2, 0);
+				panel.add(scrollPane, BorderLayout.CENTER);
+
+				frame.getContentPane().add(panel);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -156,18 +154,19 @@ public class HistoricoApostas {
 		lblNewLabel_1.setForeground(new Color(0, 0, 0));
 		lblNewLabel_1.setBackground(new Color(0, 0, 0));
 
-			
 		JButton btnDeposito = new JButton("");
 		btnDeposito.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnDeposito.setIcon(new ImageIcon(HistoricoApostas.class.getResource("/Icons/user_icon.png")));
+		if (HistoricoApostas.class.getResource("/Icons/user_icon.png") != null) {
+			btnDeposito.setIcon(new ImageIcon(HistoricoApostas.class.getResource("/Icons/user_icon.png")));
+		}
 		btnDeposito.setForeground(new Color(0, 0, 0));
 		btnDeposito.setFont(new Font("Dialog", Font.PLAIN, 20));
 		btnDeposito.setBounds(1210, 18, 36, 36);
 		frame.getContentPane().add(btnDeposito);
-		
+
 		JLabel lblUserName = new JLabel("Olá, " + userSession.getNome());
 		lblUserName.setForeground(new Color(255, 255, 255));
 		lblUserName.setVerticalAlignment(SwingConstants.BOTTOM);
@@ -175,7 +174,7 @@ public class HistoricoApostas {
 		lblUserName.setFont(new Font("Dialog", Font.BOLD, 24));
 		lblUserName.setBounds(935, 16, 267, 36);
 		frame.getContentPane().add(lblUserName);
-		
+
 		JLabel lblSaldo = new JLabel("Saldo R$ " + String.format("%.2f", userSession.getSaldo()).replace('.', ','));
 		lblSaldo.setFont(new Font("Dialog", Font.BOLD, 14));
 		lblSaldo.setForeground(new Color(255, 255, 255));
@@ -185,5 +184,4 @@ public class HistoricoApostas {
 
 	}
 
-	
 }
