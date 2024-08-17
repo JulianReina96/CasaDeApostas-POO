@@ -78,7 +78,7 @@ public class EventoPostgreDAO implements EventoDAO{
 	@Override
 	public Evento editarEvento(Evento evento) throws SQLException {
 		PreparedStatement ps = ConexaoSingleton.getInstance().getConexao()
-				.prepareStatement("UPDATE EVENTO SET (NOME = ?, DATA = ?, TIMECASA = ?, TIMEVISITANTE = ?, ODDCASA = ?, ODDVISITANTE = ?, ODDEMPATE = ?, ABERTA = ?) "
+				.prepareStatement("UPDATE EVENTO SET NOME = ?, DATA = ?, TIMECASA = ?, TIMEVISITANTE = ?, ODDCASA = ?, ODDVISITANTE = ?, ODDEMPATE = ?, ABERTA = ? "
 						+ "WHERE ID = ?");
 		
 		ps.setString(1, evento.getNome());

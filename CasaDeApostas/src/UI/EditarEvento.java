@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -145,6 +146,7 @@ public class EditarEvento {
 					}
 					else {
 						JOptionPane.showMessageDialog(frame, "Selecione o resultado do evento para finalizar!");
+						return;
 					}
 					Home newHome = new Home(user);
 					home.setVisible(false);
@@ -279,6 +281,27 @@ public class EditarEvento {
 		frame.getContentPane().add(linha);
 
 		JButton btnEditar = new JButton("Editar");
+		btnEditar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					String nome = txtNomeEvento.getText();
+					LocalDate dataEvento = LocalDate.parse(txtDataEvento.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+					String timeCasa = txtTimeCasa.getText();
+					String timeVisitante = txtTimeVisitante.getText();
+					Double oddCasa = Double.valueOf(txtOddCasa.getText().replace(',', '.'));
+					Double oddEmpate = Double.valueOf(txtOddEmpate.getText().replace(',', '.'));
+					Double oddDerrota = Double.valueOf(txtOddVisitante.getText().replace(',', '.'));
+					Evento editEvent = new Evento(evento.getID(), nome, dataEvento, timeCasa, timeVisitante, oddCasa, oddDerrota, oddEmpate, true);
+					EventoBusiness ctr = new EventoBusiness();
+					ctr.editarEvento(editEvent);
+					JOptionPane.showMessageDialog(frame, "Evento editado com sucesso!");
+				}
+				catch(Exception ex) {
+					JOptionPane.showMessageDialog(frame, ex.getMessage());
+				}
+				
+			}
+		});
 		btnEditar.setForeground(new Color(255, 255, 255));
 		btnEditar.setMnemonic('E');
 		btnEditar.setFont(new Font("Dialog", Font.BOLD, 16));
@@ -294,14 +317,5 @@ public class EditarEvento {
 		btnDeletar.setBounds(12, 287, 102, 27);
 		frame.getContentPane().add(btnDeletar);
 
-	}
-
-	private JRadioButton getTimeSelected(ArrayList<AbstractButton> arrayList) {
-		for (AbstractButton botao : arrayList) {
-			if (botao.isSelected()) {
-				return (JRadioButton) botao;
-			}
-		}
-		return null;
 	}
 }
