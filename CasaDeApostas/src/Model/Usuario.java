@@ -65,6 +65,7 @@ public class Usuario {
 		this.saldo = saldo;
 	}
 	
+	public void setNome(String nome) {this.nome = nome;}
 	public boolean isAdministrador() {
 		return Administrador;
 	}

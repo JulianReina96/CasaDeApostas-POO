@@ -1,6 +1,7 @@
 package Business;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import DAO.UsuarioDAO;
 import DAO.UsuarioPostgreDAO;
@@ -14,6 +15,9 @@ public class UsuarioBusiness {
 		user.setSenha(criptografarSenha(user)); 
 		return usuarioDAO.CadastrarUsuario(user);
 	}
+	public Usuario EditarUsuario(Usuario user) throws SQLException {
+		return usuarioDAO.EditarUsuario(user);
+	}
 	
 	public Usuario Login(Usuario user) throws SQLException {
 		
@@ -26,7 +30,15 @@ public class UsuarioBusiness {
 			return null;
 	}
 	
-	private String criptografarSenha(Usuario user) {
+	public String criptografarSenha(Usuario user) {
 	    return BCrypt.hashpw(user.getSenha(), BCrypt.gensalt());
+	}
+	
+	public String criptografarSenha(String senha) {
+	    return BCrypt.hashpw(senha, BCrypt.gensalt());
+	}
+	
+	public boolean verificarSenha(String senhaUser, String senhaDigitada) {
+		return (BCrypt.checkpw(senhaUser, senhaDigitada));
 	}
 }

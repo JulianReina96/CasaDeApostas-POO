@@ -43,13 +43,14 @@ public class UsuarioPostgreDAO implements UsuarioDAO {
 
 	@Override
 	public Usuario EditarUsuario(Usuario user) throws SQLException{
-		PreparedStatement ps = ConexaoSingleton.getInstance().getConexao().prepareStatement("UPDATE USUARIO SET(NOME = ?, EMAIL = ?, SENHA = ?, SALDO = ?, ADMINISTRADOR = ?) WHERE ID = ?");
+		PreparedStatement ps = ConexaoSingleton.getInstance().getConexao().prepareStatement("UPDATE USUARIO SET NOME = ?, EMAIL = ?, SENHA = ?, SALDO = ?, ADMINISTRADOR = ? WHERE EMAIL = ?");
 		ps.setString(1, user.getNome());
 		ps.setString(2, user.getEmail());
 		ps.setString(3, user.getSenha());
 		ps.setDouble(4, user.getSaldo());
-		ps.setBoolean(4, user.isAdministrador());
-		ps.setInt(5, user.getID());
+		ps.setBoolean(5, user.isAdministrador());
+		ps.setString(6, user.getEmail());
+
 		
 		if(ps.executeUpdate() > 0)
 			return user;

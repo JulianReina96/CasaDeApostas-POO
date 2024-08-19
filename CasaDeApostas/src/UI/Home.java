@@ -229,6 +229,14 @@ public class Home {
         
 
         JMenuItem itemConta = new JMenuItem("Conta");
+		itemConta.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ContaUsuario Conta =new ContaUsuario(userSession);
+				
+				Conta.getFrame().setVisible(true);
+			}
+		});
+
         menuOpcoes.add(itemConta);
         
         if(userSession.isAdministrador()) {
