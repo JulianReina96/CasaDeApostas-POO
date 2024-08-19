@@ -33,9 +33,12 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
+import Business.ApostaBusiness;
 import Business.EventoBusiness;
+import Model.Aposta;
 import Model.Evento;
 import Model.Usuario;
+
 import javax.swing.ImageIcon;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -151,9 +154,67 @@ public class Home {
 		});
 		
 
-		tbApostas = new JTable();
-		tbApostas.setBounds(916, 106, 338, 564);
-		frame.getContentPane().add(tbApostas);
+		SwingUtilities.invokeLater(() -> { //TESTE DA TABELA DE APOSTAS PENDENTES PARA A HOME
+			ApostaBusiness ctr = new ApostaBusiness();
+				List<Aposta> apostas = userSession.getApostasPendentes();
+				Object[][] data = new Object[apostas.size()][6];
+				for (int i = 0; i < apostas.size(); i++) {
+					Aposta aposta = apostas.get(i);
+
+					data[i] = new Object[] { aposta.tipoApostaDescricao(), 
+							"R$ " + aposta.getValor(), aposta
+							 };
+				}
+
+				String[] columnNames = { "Aposta", "Valor Apostado", "Remover", ""};
+
+				// Modelo da tabela
+				DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+					 @Override
+					    public boolean isCellEditable(int row, int column) {
+					        return column == 2; // Torna a coluna dos botões editável
+					    }
+				};
+
+				// Criação da tabela
+				JTable table = new JTable(model);
+				table.setRowHeight(30); // Ajusta a altura da linha
+				
+				// Ocultar a última coluna
+				TableColumn lastColumn = table.getColumnModel().getColumn(table.getColumnCount() - 1);
+				lastColumn.setMinWidth(0);
+				lastColumn.setMaxWidth(0);
+				lastColumn.setPreferredWidth(0);
+
+
+				// Centraliza os dados em todas as colunas
+				for (int i = 0; i < table.getColumnCount(); i++) {
+					table.getColumnModel().getColumn(i).setCellRenderer(new DefaultTableCellRenderer() {
+						@Override
+						public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+								boolean hasFocus, int row, int column) {
+							Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row,
+									column);
+							((JLabel) c).setHorizontalAlignment(SwingConstants.CENTER);
+							return c;
+						}
+					});
+				}
+				
+				// Configuração do renderizador e editor para a coluna do botão
+				table.getColumnModel().getColumn(2).setCellRenderer(new ButtonRendererRemove());
+				table.getColumnModel().getColumn(2).setCellEditor(new ButtonEditorRemove(new JCheckBox()));
+
+				JPanel panel = new JPanel(new BorderLayout());
+				panel.setSize(338, 564);
+				panel.setLocation(916, 106);
+
+				JScrollPane scrollPane = new JScrollPane(table);
+				scrollPane.setLocation(2, 0);
+				panel.add(scrollPane, BorderLayout.CENTER);
+
+				frame.getContentPane().add(panel);
+		});
 
 		
 		JMenuBar menuBar = new JMenuBar();
@@ -186,14 +247,14 @@ public class Home {
         
         JMenuItem itemNovoEvento = new JMenuItem("Adicionar Evento");
         
-        /*itemNovoEvento.addActionListener(new ActionListener() {
+       itemNovoEvento.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				AdicionarEvento evento = new AdicionarEvento();
 				
 				evento.getFrame().setVisible(true);
 			}
 		});
-        */
+       
         menuOpcoes.add(itemNovoEvento);
         }
         else {
@@ -351,4 +412,58 @@ public class Home {
 			return button.getText();
 		}
 	}
+	
+	// Renderizador de célula para o botão REMOVER APOSTA
+		class ButtonRendererRemove extends JButton implements TableCellRenderer {
+
+			public ButtonRendererRemove() {
+				setOpaque(true);
+
+					setText("Remover");
+			}
+
+			@Override
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+					int row, int column) {
+				return this;
+			}
+		}
+		
+		// Editor de célula para o botão REMOVER APOSTA
+		class ButtonEditorRemove extends DefaultCellEditor {
+			
+			private final JButton button;
+			private JTable table;
+
+			public ButtonEditorRemove(JCheckBox checkBox) {
+				super(checkBox);
+				button = new JButton();
+				button.setOpaque(true);
+
+				button.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						int row = table.convertRowIndexToModel(table.getEditingRow());
+						Aposta aposta = (Aposta) table.getValueAt(row, 3); 
+						userSession.removerApostaPendente(aposta);
+						table.removeRowSelectionInterval(row, row);
+					}
+				});
+
+				table = null; // Inicialize em null, será definido mais tarde
+			}
+
+			@Override
+			public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row,
+					int column) {
+				this.table = table;
+				button.setText("Remover");
+				return button;
+			}
+
+			@Override
+			public Object getCellEditorValue() {
+				return button.getText();
+			}
+		}
 }

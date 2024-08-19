@@ -1,4 +1,6 @@
 package Model;
+import java.util.ArrayList;
+
 
 public class Usuario {
 	private int ID;
@@ -7,12 +9,16 @@ public class Usuario {
 	private String senha;
 	private double saldo;
 	private boolean Administrador;
+	private ArrayList<Aposta> apostasPendentes;
 	
-	public Usuario() {}
+	public Usuario() {
+		this.apostasPendentes = new ArrayList<>();
+	}
 	
 	public Usuario(String email, String senha) {
 		this.email = email;
 		this.senha = senha;
+		this.apostasPendentes = new ArrayList<>();
 	}
 	
 	public Usuario(String nome, String email, String senha, double saldo, boolean admin) {
@@ -21,6 +27,7 @@ public class Usuario {
 		this.senha = senha;
 		this.saldo = saldo;
 		this.Administrador = admin;
+		this.apostasPendentes = new ArrayList<>();
 	}
 	
 	public Usuario(int ID, String nome, String email, String senha, double saldo ,boolean admin) {
@@ -30,6 +37,7 @@ public class Usuario {
 		this.senha = senha;
 		this.saldo = saldo;
 		this.Administrador = admin;
+		this.apostasPendentes = new ArrayList<>();
 	}
 	
 	public int getID() {
@@ -64,5 +72,21 @@ public class Usuario {
 	@Override
 	public String toString() {
 		return "Bem vindo " + this.getNome() + " Seus dados de login são\nEmail: " + this.getEmail() +"\nSenha: " + this.getSenha() + "\nSeu saldo atual é de "+ this.getSaldo();
+	}
+	
+	public ArrayList<Aposta> getApostasPendentes () {
+		return apostasPendentes;
+	}
+	
+	public void adicionarApostaPendente (Aposta aposta) {
+		apostasPendentes.add(aposta);
+	}
+	
+	public void apostasPendentesClear () {
+		apostasPendentes.clear();
+	}
+	
+	public void removerApostaPendente (Aposta aposta) {
+		apostasPendentes.remove(aposta);
 	}
 }

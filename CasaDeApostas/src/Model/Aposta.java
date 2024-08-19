@@ -80,6 +80,17 @@ public class Aposta {
 		}
 
 		}
+	public String tipoApostaDescricao () {
+		if (tipoAposta.getID() == 1) {
+			return evento.getTimeCasa();
+		}
+		else if (tipoAposta.getID() == 2) {
+			return "Empate";
+		}
+		else {
+			return evento.getTimeVisitante();
+		}
+	}
 		
 	}
 	
