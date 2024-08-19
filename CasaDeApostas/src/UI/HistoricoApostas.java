@@ -71,17 +71,29 @@ public class HistoricoApostas {
 			ApostaBusiness ctr = new ApostaBusiness();
 			try {
 				List<Aposta> apostas = ctr.listarApostas(userSession.getID());
-				Object[][] data = new Object[apostas.size()][6];
+				Object[][] data = new Object[apostas.size()][8];
 				for (int i = 0; i < apostas.size(); i++) {
 					Aposta aposta = apostas.get(i);
-
+					double balance = 0;
+					if(aposta.getStatusAposta().getID() == 1) {
+						balance = 0;
+					}
+					else if(aposta.getStatusAposta().getID() == 3) {
+						balance = -1 * aposta.getValor();
+					}
+					else {
+						balance = aposta.getValor() * aposta.getOddApostada();
+					}
 					data[i] = new Object[] { aposta.getEvento().getNome(),
 							aposta.getEvento().getDataEvento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
-							aposta.getTipoAposta().getDescricao(), "R$ " + aposta.getValor(),
-							aposta.getStatusAposta().getDescricao() };
+							aposta.getTipoAposta().getDescricao(),
+							aposta.getOddApostada(),
+							"R$ " + aposta.getValor(),
+							aposta.getStatusAposta().getDescricao(), 
+							balance};
 				}
 
-				String[] columnNames = { "Evento", "Data do Evento", "Tipo de Aposta", "Valor Apostado", "Status" };
+				String[] columnNames = { "Evento", "Data do Evento", "Tipo de Aposta", "ODD Apostada", "Valor Apostado", "Status", "Balanço"};
 
 				// Modelo da tabela
 				DefaultTableModel model = new DefaultTableModel(data, columnNames);
@@ -89,14 +101,6 @@ public class HistoricoApostas {
 				// Criação da tabela
 				JTable table = new JTable(model);
 				table.setRowHeight(30); // Ajusta a altura da linha
-
-				// Ocultar a última coluna
-				/*
-				 * TableColumn lastColumn =
-				 * table.getColumnModel().getColumn(table.getColumnCount() - 1);
-				 * lastColumn.setMinWidth(0); lastColumn.setMaxWidth(0);
-				 * lastColumn.setPreferredWidth(0);
-				 */
 
 				// Centraliza os dados em todas as colunas
 				for (int i = 0; i < table.getColumnCount(); i++) {
@@ -107,13 +111,26 @@ public class HistoricoApostas {
 							Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row,
 									column);
 							((JLabel) c).setHorizontalAlignment(SwingConstants.CENTER);
+							
+							// Adiciona cor às colunas Status e Balanço
+		                    if (column == 5 || column == 6) {
+		                        String status =  (String)table.getModel().getValueAt(row, 5);
+		                        if (status.equals("Pendente")) {
+		                            c.setForeground(Color.BLACK);
+		                        } else if (status.equals("Vencida")) {
+		                            c.setForeground(new Color(10, 151, 99));
+		                        } else{
+		                            c.setForeground(Color.RED);
+		                        }
+		                    }
+							
 							return c;
 						}
 					});
 				}
 
 				JPanel panel = new JPanel(new BorderLayout());
-				panel.setSize(866, 564);
+				panel.setSize(1226, 564);
 				panel.setLocation(20, 106);
 
 				JScrollPane scrollPane = new JScrollPane(table);
@@ -153,19 +170,6 @@ public class HistoricoApostas {
 		frame.getContentPane().add(lblNewLabel_1);
 		lblNewLabel_1.setForeground(new Color(0, 0, 0));
 		lblNewLabel_1.setBackground(new Color(0, 0, 0));
-
-		JButton btnDeposito = new JButton("");
-		btnDeposito.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		if (HistoricoApostas.class.getResource("/Icons/user_icon.png") != null) {
-			btnDeposito.setIcon(new ImageIcon(HistoricoApostas.class.getResource("/Icons/user_icon.png")));
-		}
-		btnDeposito.setForeground(new Color(0, 0, 0));
-		btnDeposito.setFont(new Font("Dialog", Font.PLAIN, 20));
-		btnDeposito.setBounds(1210, 18, 36, 36);
-		frame.getContentPane().add(btnDeposito);
 
 		JLabel lblUserName = new JLabel("Olá, " + userSession.getNome());
 		lblUserName.setForeground(new Color(255, 255, 255));
