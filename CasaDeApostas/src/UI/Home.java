@@ -33,10 +33,16 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
+import Business.ApostaBusiness;
 import Business.EventoBusiness;
+import Model.Aposta;
 import Model.Evento;
 import Model.Usuario;
+
 import javax.swing.ImageIcon;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JMenu;
 
 public class Home {
 
@@ -71,7 +77,7 @@ public class Home {
 			EventoBusiness ctr = new EventoBusiness();
 			try {
 				List<Evento> eventos = ctr.listarEventos();
-				Object[][] data = new Object[eventos.size()][6];
+				Object[][] data = new Object[(int) eventos.stream().filter(x -> x.getAberta()).count()][6];
 				String nomeBotao = "";
 				if(userSession.isAdministrador()) {
 					nomeBotao = "Editar";
@@ -80,10 +86,11 @@ public class Home {
 					nomeBotao = "Apostar";
 				}
 				 
+				int count = 0;
 			    for (int i = 0; i < eventos.size(); i++) {
 			        Evento evento = eventos.get(i);
 			        if(evento.getAberta()) {
-			        	data[i] = new Object[]{
+			        	data[count] = new Object[]{
 				                evento.getNome(),
 				                evento.getDataEvento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
 				                evento.getTimeCasa() + " - " + evento.getOddVitoria(),
@@ -92,6 +99,7 @@ public class Home {
 				                nomeBotao,
 				                evento
 				        };
+			        	count++;
 			        }
 			    }
 
@@ -146,10 +154,155 @@ public class Home {
 		});
 		
 
-		tbApostas = new JTable();
-		tbApostas.setBounds(916, 106, 338, 564);
-		frame.getContentPane().add(tbApostas);
+		SwingUtilities.invokeLater(() -> { //TESTE DA TABELA DE APOSTAS PENDENTES PARA A HOME
+			ApostaBusiness ctr = new ApostaBusiness();
+				List<Aposta> apostas = userSession.getApostasPendentes();
+				Object[][] data = new Object[apostas.size()][6];
+				for (int i = 0; i < apostas.size(); i++) {
+					Aposta aposta = apostas.get(i);
 
+					data[i] = new Object[] { aposta.tipoApostaDescricao(), 
+							"R$ " + aposta.getValor(), aposta
+							 };
+				}
+
+				String[] columnNames = { "Aposta", "Valor Apostado", "Remover", ""};
+
+				// Modelo da tabela
+				DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+					 @Override
+					    public boolean isCellEditable(int row, int column) {
+					        return column == 2; // Torna a coluna dos botões editável
+					    }
+				};
+
+				// Criação da tabela
+				JTable table = new JTable(model);
+				table.setRowHeight(30); // Ajusta a altura da linha
+				
+				// Ocultar a última coluna
+				TableColumn lastColumn = table.getColumnModel().getColumn(table.getColumnCount() - 1);
+				lastColumn.setMinWidth(0);
+				lastColumn.setMaxWidth(0);
+				lastColumn.setPreferredWidth(0);
+
+
+				// Centraliza os dados em todas as colunas
+				for (int i = 0; i < table.getColumnCount(); i++) {
+					table.getColumnModel().getColumn(i).setCellRenderer(new DefaultTableCellRenderer() {
+						@Override
+						public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+								boolean hasFocus, int row, int column) {
+							Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row,
+									column);
+							((JLabel) c).setHorizontalAlignment(SwingConstants.CENTER);
+							return c;
+						}
+					});
+				}
+				
+				// Configuração do renderizador e editor para a coluna do botão
+				table.getColumnModel().getColumn(2).setCellRenderer(new ButtonRendererRemove());
+				table.getColumnModel().getColumn(2).setCellEditor(new ButtonEditorRemove(new JCheckBox()));
+
+				JPanel panel = new JPanel(new BorderLayout());
+				panel.setSize(338, 564);
+				panel.setLocation(916, 106);
+
+				JScrollPane scrollPane = new JScrollPane(table);
+				scrollPane.setLocation(2, 0);
+				panel.add(scrollPane, BorderLayout.CENTER);
+
+				frame.getContentPane().add(panel);
+		});
+
+		
+		JMenuBar menuBar = new JMenuBar();
+		menuBar.setSize(44, 36);
+		menuBar.setLocation(1210, 18);
+
+        JMenu menuOpcoes = new JMenu("");
+        
+        if(Home.class.getResource("/Icons/user_icon.png") != null) {
+        	menuOpcoes.setIcon(new ImageIcon(Home.class.getResource("/Icons/user_icon.png")));
+        }
+        
+
+        JMenuItem itemConta = new JMenuItem("Conta");
+		itemConta.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ContaUsuario Conta =new ContaUsuario(userSession);
+				
+				Conta.getFrame().setVisible(true);
+			}
+		});
+
+        menuOpcoes.add(itemConta);
+        
+        if(userSession.isAdministrador()) {
+        	
+        JMenuItem itemAdmin = new JMenuItem("Cadastrar Admin");
+        
+        itemAdmin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Cadastro cadastro = new Cadastro(true);
+				
+				cadastro.getFrame().setVisible(true);
+			}
+		});
+        
+        menuOpcoes.add(itemAdmin);
+        
+        JMenuItem itemNovoEvento = new JMenuItem("Adicionar Evento");
+        
+       itemNovoEvento.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				AdicionarEvento evento = new AdicionarEvento();
+				
+				evento.getFrame().setVisible(true);
+			}
+		});
+       
+        menuOpcoes.add(itemNovoEvento);
+        }
+        else {
+        JMenuItem itemApostas = new JMenuItem("Minhas Apostas");
+        itemApostas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				HistoricoApostas historicoapostas = new HistoricoApostas(userSession);
+				frame.setVisible(false);
+				historicoapostas.getFrame().setVisible(true);
+			}
+		});
+        
+        menuOpcoes.add(itemApostas);
+        }
+
+        
+        JMenuItem itemSair = new JMenuItem("Sair");
+        itemSair.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Login login = new Login();
+			frame.setVisible(false);
+				
+				login.getFrame().setVisible(true);
+			}
+		});
+        menuOpcoes.add(itemSair);
+        
+        
+        
+      
+        menuBar.add(menuOpcoes);
+
+        frame.getContentPane().add(menuBar);
+        //MENU OPÇÕES CADASTRAR EVENTOS 
+		
+		
+		
+		
+		
+		
 		JLabel lblNewLabel = new JLabel("Cat's Bet");
 		lblNewLabel.setForeground(new Color(255, 255, 255));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -177,18 +330,6 @@ public class Home {
 		lblNewLabel_2.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblNewLabel_2.setBounds(1008, 71, 165, 36);
 		frame.getContentPane().add(lblNewLabel_2);
-
-			
-		JButton btnDeposito = new JButton("");
-		btnDeposito.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnDeposito.setIcon(new ImageIcon(Home.class.getResource("/Icons/user_icon.png")));
-		btnDeposito.setForeground(new Color(0, 0, 0));
-		btnDeposito.setFont(new Font("Dialog", Font.PLAIN, 20));
-		btnDeposito.setBounds(1210, 18, 36, 36);
-		frame.getContentPane().add(btnDeposito);
 		
 		JLabel lblUserName = new JLabel("Olá, " + userSession.getNome());
 		lblUserName.setForeground(new Color(255, 255, 255));
@@ -249,7 +390,8 @@ public class Home {
 						fireEditingStopped(); // Para parar a edição
 					}
 					else {
-						JOptionPane.showMessageDialog(frame, "Ainda não foi implementado");
+						EditarEvento editEvent = new EditarEvento(evento, frame, userSession);
+						editEvent.getFrame().setVisible(true);
 						fireEditingStopped();
 					}
 					
@@ -278,4 +420,58 @@ public class Home {
 			return button.getText();
 		}
 	}
+	
+	// Renderizador de célula para o botão REMOVER APOSTA
+		class ButtonRendererRemove extends JButton implements TableCellRenderer {
+
+			public ButtonRendererRemove() {
+				setOpaque(true);
+
+					setText("Remover");
+			}
+
+			@Override
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+					int row, int column) {
+				return this;
+			}
+		}
+		
+		// Editor de célula para o botão REMOVER APOSTA
+		class ButtonEditorRemove extends DefaultCellEditor {
+			
+			private final JButton button;
+			private JTable table;
+
+			public ButtonEditorRemove(JCheckBox checkBox) {
+				super(checkBox);
+				button = new JButton();
+				button.setOpaque(true);
+
+				button.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						int row = table.convertRowIndexToModel(table.getEditingRow());
+						Aposta aposta = (Aposta) table.getValueAt(row, 3); 
+						userSession.removerApostaPendente(aposta);
+						table.removeRowSelectionInterval(row, row);
+					}
+				});
+
+				table = null; // Inicialize em null, será definido mais tarde
+			}
+
+			@Override
+			public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row,
+					int column) {
+				this.table = table;
+				button.setText("Remover");
+				return button;
+			}
+
+			@Override
+			public Object getCellEditorValue() {
+				return button.getText();
+			}
+		}
 }

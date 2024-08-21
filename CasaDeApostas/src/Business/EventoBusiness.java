@@ -30,4 +30,8 @@ public class EventoBusiness {
 		return eventoDAO.deletarEvento(evento);
 	}
 	
+	public boolean finalizarEvento(int eventoID, int TipoVencededorID) throws SQLException{
+		return eventoDAO.finalizarEvento(eventoID, TipoVencededorID);
+	}
+	
 }

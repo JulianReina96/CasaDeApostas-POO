@@ -80,10 +80,10 @@ public class Apostar {
 						JOptionPane.showMessageDialog(frame, "O valor apostado excede o saldo!");
 					}
 					else {
-						ApostaBusiness ctr = new ApostaBusiness();
+						
 						try {
-							ctr.reaizarAposta(new Aposta(user, evento, Integer.valueOf(botao.getName()), Double.valueOf(valor.replace(',', '.'))));
-							JOptionPane.showMessageDialog(frame, "Aposta realizada com sucesso!");
+							user.adicionarApostaPendente((new Aposta(user, evento, Integer.valueOf(botao.getName()), Double.valueOf(valor.replace(',', '.')))));
+							JOptionPane.showMessageDialog(frame, "Aposta adicionada ao carrinho com sucesso!");
 							Home novaTela = new Home(user);
 							frame.setVisible(false);
 							novaTela.getFrame().setVisible(true);
@@ -91,9 +91,7 @@ public class Apostar {
 							
 						} catch (NumberFormatException e1) {
 							JOptionPane.showMessageDialog(frame, "Ocorreu um erro ao apostar!");
-						} catch (SQLException e1) {
-							JOptionPane.showMessageDialog(frame, "Ocorreu um erro ao apostar!");
-						}
+						} 
 					}
 				}				
 			}
