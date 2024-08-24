@@ -11,7 +11,7 @@ CREATE TABLE StatusAposta (
 CREATE TABLE Usuario (
     ID serial PRIMARY KEY,
     Nome varchar,
-    Email varchar,
+    Email varchar UNIQUE,
     Senha varchar,
 	Saldo double precision,
     Administrador bool
@@ -38,7 +38,7 @@ CREATE TABLE Aposta (
     DataAposta date,
     StatusApostaID int,
     TipoApostaID int,
-    FOREIGN KEY (UsuarioID) REFERENCES Usuario(ID),
+    FOREIGN KEY (UsuarioID) REFERENCES Usuario(ID) ON DELETE CASCADE,
     FOREIGN KEY (EventoID) REFERENCES Evento(ID),
     FOREIGN KEY (StatusApostaID) REFERENCES StatusAposta(ID),
     FOREIGN KEY (TipoApostaID) REFERENCES TIPOAPOSTA(ID)
