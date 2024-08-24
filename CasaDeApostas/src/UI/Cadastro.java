@@ -130,7 +130,11 @@ public class Cadastro {
 							JOptionPane.showMessageDialog(frame, "Erro ao Cadastrar o Usuario!");
 						}
 					} catch (Exception e1) {
-						JOptionPane.showMessageDialog(frame, "Erro ao Cadastrar o Usuario!");
+						if(e1.getMessage()
+.contains("usuario_email_key"))
+							JOptionPane.showMessageDialog(frame, "Erro ao Cadastrar o Usuario! Email já cadastrado");
+						else
+							JOptionPane.showMessageDialog(frame, "Erro ao Cadastrar o Usuario!");
 						e1.printStackTrace();
 					}
 				} else {
