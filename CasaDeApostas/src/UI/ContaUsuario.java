@@ -12,7 +12,10 @@ import Model.Usuario;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 import java.awt.Font;
 import java.awt.HeadlessException;
@@ -142,8 +145,10 @@ public class ContaUsuario {
 							try {
 								userSession = ctr.EditarUsuario(usuarioEditado);
 								JOptionPane.showMessageDialog(frame, "Usuario editado com sucesso");
+								Home home = new Home(userSession);
 
 								frame.setVisible(false);
+								home.getFrame().setVisible(true);
 
 								
 							} catch (SQLException e1) {
@@ -217,6 +222,67 @@ public class ContaUsuario {
 		lblEditarUsurio.setFont(new Font("Dialog", Font.BOLD, 22));
 		lblEditarUsurio.setBounds(181, 10, 191, 50);
 		frame.getContentPane().add(lblEditarUsurio);
+		
+		
+		ImageIcon iconTrash = new ImageIcon(ContaUsuario.class.getResource("/Icons/trash.png"));
+		
+		JButton btnExcluirUsuario = new JButton("", iconTrash);
+		btnExcluirUsuario.setBounds(453, 493, 47, 43);
+		
+		
+		btnExcluirUsuario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JPasswordField campoSenha = new JPasswordField();
+				JPanel panel = new JPanel();
+				JTextArea textArea = new JTextArea("Atenção! Essa ação irá excluir todos"
+						+ " os dados do usuario. Deseja continuar?");
+				textArea.setLineWrap(true);
+				textArea.setWrapStyleWord(true);
+				textArea.setSize(300,400);
+				textArea.disable();
+				textArea.setDisabledTextColor(Color.red);
+			    panel.add(textArea);
+			    
+
+				int resposta = JOptionPane.showConfirmDialog(null, panel, "Excluir Conta", JOptionPane.YES_NO_OPTION);	
+				if(resposta == JOptionPane.OK_OPTION){
+					int respostaSenha = JOptionPane.showConfirmDialog(null, campoSenha, "Digite sua senha", JOptionPane.OK_CANCEL_OPTION);
+				
+				if (respostaSenha == JOptionPane.OK_OPTION) {
+					UsuarioBusiness ctr = new UsuarioBusiness();
+					if(ctr.verificarSenha(campoSenha.getText(), userSession.getSenha())) {
+						try {
+							ctr.DeletarUsuario(userSession.getEmail());
+							Login login = new Login();
+							frame.setVisible(false);
+							login.getFrame().setVisible(true);
+						    
+						    JOptionPane.showMessageDialog(frame, "Que pena não termos mais você aqui conosco. Sinta-se livre para voltar quando desejar!");
+						    
+							
+							
+							
+						}catch(SQLException ex) {
+							JOptionPane.showMessageDialog(frame, "Erro ao editar usuario!");
+							ex.printStackTrace();
+						}
+
+					}
+					else {
+						JOptionPane.showMessageDialog(frame, "Senha incorreta!");
+						
+					}
+					}
+					}
+
+			}
+		});
+		frame.getContentPane().add(btnExcluirUsuario);
+		
+		JLabel lblNewLabel = new JLabel("Excluir Conta");
+		lblNewLabel.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblNewLabel.setBounds(430, 538, 94, 13);
+		frame.getContentPane().add(lblNewLabel);
 	}
 
 	private void toggleExibirSenha(JPasswordField campoSenha, JButton botao) {

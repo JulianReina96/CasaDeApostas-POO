@@ -58,9 +58,9 @@ public class UsuarioPostgreDAO implements UsuarioDAO {
 	}
 
 	@Override
-	public boolean DeletarUsuario(Usuario user) throws SQLException {
-		PreparedStatement ps = ConexaoSingleton.getInstance().getConexao().prepareStatement("DELETE FROM USUARIO WHERE ID = ?;");
-		ps.setInt(1, user.getID());
+	public boolean DeletarUsuario(String email) throws SQLException {
+		PreparedStatement ps = ConexaoSingleton.getInstance().getConexao().prepareStatement("DELETE FROM USUARIO WHERE EMAIL = ?;");
+		ps.setString(1, email);
 		if(ps.executeUpdate() > 0)
 			return true;
 		return false;

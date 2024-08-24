@@ -18,6 +18,9 @@ public class UsuarioBusiness {
 	public Usuario EditarUsuario(Usuario user) throws SQLException {
 		return usuarioDAO.EditarUsuario(user);
 	}
+	public boolean DeletarUsuario(String email) throws SQLException {
+		return usuarioDAO.DeletarUsuario(email);
+	}
 	
 	public Usuario Login(Usuario user) throws SQLException {
 		
