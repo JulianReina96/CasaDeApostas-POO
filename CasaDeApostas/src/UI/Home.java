@@ -232,6 +232,7 @@ public class Home {
 		itemConta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ContaUsuario Conta =new ContaUsuario(userSession);
+				frame.setVisible(false);
 				
 				Conta.getFrame().setVisible(true);
 			}
