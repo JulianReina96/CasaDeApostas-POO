@@ -176,7 +176,7 @@ public class HistoricoApostas {
 		lblUserName.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblUserName.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblUserName.setFont(new Font("Dialog", Font.BOLD, 24));
-		lblUserName.setBounds(935, 16, 267, 36);
+		lblUserName.setBounds(979, 16, 267, 36);
 		frame.getContentPane().add(lblUserName);
 
 		JLabel lblSaldo = new JLabel("Saldo R$ " + String.format("%.2f", userSession.getSaldo()).replace('.', ','));

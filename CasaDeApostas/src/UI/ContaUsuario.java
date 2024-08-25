@@ -78,10 +78,10 @@ public class ContaUsuario {
 		lblEmail.setForeground(new Color(255, 255, 255));
 		lblEmail.setFont(new Font("Dialog", Font.BOLD, 18));
 		lblEmail.setBounds(107, 150, 124, 20);
-		lblEmail.setText(userSession.getEmail());
 		frame.getContentPane().add(lblEmail);
 
 		txtEmail = new JTextField();
+		txtEmail.setText(userSession.getEmail());
 		txtEmail.setEditable(false);
 		txtEmail.setEnabled(false);
 		txtEmail.setFont(new Font("Dialog", Font.PLAIN, 16));
@@ -223,8 +223,10 @@ public class ContaUsuario {
 		lblEditarUsurio.setBounds(181, 10, 191, 50);
 		frame.getContentPane().add(lblEditarUsurio);
 		
-		
-		ImageIcon iconTrash = new ImageIcon(ContaUsuario.class.getResource("/Icons/trash.png"));
+		ImageIcon iconTrash = new ImageIcon();
+		if(ContaUsuario.class.getResource("/Icons/trash.png") != null) {
+			iconTrash = new ImageIcon(ContaUsuario.class.getResource("/Icons/trash.png"));
+		}
 		
 		JButton btnExcluirUsuario = new JButton("", iconTrash);
 		btnExcluirUsuario.setBounds(453, 493, 47, 43);
