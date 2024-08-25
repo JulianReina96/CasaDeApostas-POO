@@ -157,16 +157,16 @@ public class Home {
 		SwingUtilities.invokeLater(() -> { //TESTE DA TABELA DE APOSTAS PENDENTES PARA A HOME
 			ApostaBusiness ctr = new ApostaBusiness();
 				List<Aposta> apostas = userSession.getApostasPendentes();
-				Object[][] data = new Object[apostas.size()][6];
+				Object[][] data = new Object[apostas.size()][3];
 				for (int i = 0; i < apostas.size(); i++) {
 					Aposta aposta = apostas.get(i);
 
 					data[i] = new Object[] { aposta.tipoApostaDescricao(), 
-							"R$ " + aposta.getValor(), aposta
+							"R$ " + aposta.getValor()
 							 };
 				}
 
-				String[] columnNames = { "Aposta", "Valor Apostado", "Remover", ""};
+				String[] columnNames = { "Aposta", "Valor Apostado", "Remover"};
 
 				// Modelo da tabela
 				DefaultTableModel model = new DefaultTableModel(data, columnNames) {
@@ -179,12 +179,6 @@ public class Home {
 				// Criação da tabela
 				JTable table = new JTable(model);
 				table.setRowHeight(30); // Ajusta a altura da linha
-				
-				// Ocultar a última coluna
-				TableColumn lastColumn = table.getColumnModel().getColumn(table.getColumnCount() - 1);
-				lastColumn.setMinWidth(0);
-				lastColumn.setMaxWidth(0);
-				lastColumn.setPreferredWidth(0);
 
 
 				// Centraliza os dados em todas as colunas
@@ -206,7 +200,7 @@ public class Home {
 				table.getColumnModel().getColumn(2).setCellEditor(new ButtonEditorRemove(new JCheckBox()));
 
 				JPanel panel = new JPanel(new BorderLayout());
-				panel.setSize(338, 564);
+				panel.setSize(338, 464);
 				panel.setLocation(916, 106);
 
 				JScrollPane scrollPane = new JScrollPane(table);
@@ -346,6 +340,53 @@ public class Home {
 		lblSaldo.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblSaldo.setBounds(1081, 60, 165, 14);
 		frame.getContentPane().add(lblSaldo);
+		
+		JButton btnNewButton = new JButton("APOSTAR");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int resposta = JOptionPane.showConfirmDialog(null, "Deseja continuar?", "Confirmação", JOptionPane.YES_NO_OPTION);
+				if(resposta == JOptionPane.YES_OPTION) {
+					if(userSession.somarApostaPendente() > userSession.getSaldo()) {
+						JOptionPane.showMessageDialog(frame, "O valor apostado excede o saldo!");
+					}
+					else {
+						ApostaBusiness ctr = new ApostaBusiness();
+						try {
+							for (Aposta aposta : userSession.getApostasPendentes()) {
+								var apostas = ctr.reaizarAposta(aposta);
+							}
+							JOptionPane.showMessageDialog(frame, "Aposta realizada com sucesso!");
+							userSession.setSaldo(userSession.getSaldo() - userSession.somarApostaPendente());
+							userSession.apostasPendentesClear();
+							Home novaTela = new Home(userSession);
+							frame.setVisible(false);
+							novaTela.getFrame().setVisible(true);
+
+						} catch(SQLException e1) {
+							JOptionPane.showMessageDialog(frame, "Ocorreu um erro ao apostar!");
+						}
+					}
+				}
+
+			}
+		});
+		btnNewButton.setFont(new Font("Dialog", Font.BOLD, 12));
+		btnNewButton.setBounds(1035, 620, 111, 21);
+		frame.getContentPane().add(btnNewButton);
+		
+		JLabel lblApostaR = new JLabel("Aposta R$ "+ String.format("%.2f", userSession.somarApostaPendente()).replace('.', ','));
+		lblApostaR.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblApostaR.setForeground(Color.WHITE);
+		lblApostaR.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblApostaR.setBounds(916, 585, 165, 14);
+		frame.getContentPane().add(lblApostaR);
+		
+		JLabel lblRetornosR = new JLabel("Ganhos R$ "+ String.format("%.2f", userSession.ganhosApostaPendente()).replace('.', ','));
+		lblRetornosR.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblRetornosR.setForeground(Color.WHITE);
+		lblRetornosR.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblRetornosR.setBounds(1091, 585, 165, 14);
+		frame.getContentPane().add(lblRetornosR);
 
 	}
 
@@ -452,10 +493,11 @@ public class Home {
 				button.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						int row = table.convertRowIndexToModel(table.getEditingRow());
-						Aposta aposta = (Aposta) table.getValueAt(row, 3); 
-						userSession.removerApostaPendente(aposta);
-						table.removeRowSelectionInterval(row, row);
+						int row = table.convertRowIndexToModel(table.getEditingRow()); 
+						userSession.removerApostaPendente(row);
+						Home novaTela = new Home(userSession);
+						frame.setVisible(false);
+						novaTela.getFrame().setVisible(true);
 					}
 				});
 
