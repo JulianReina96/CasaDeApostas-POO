@@ -252,7 +252,7 @@ public class Home {
         
        itemNovoEvento.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				AdicionarEvento evento = new AdicionarEvento();
+				AdicionarEvento evento = new AdicionarEvento(frame, userSession);
 				
 				evento.getFrame().setVisible(true);
 			}

@@ -41,7 +41,8 @@ import javax.swing.Icon;
 public class AdicionarEvento {
 
 	private JFrame frame;
-	private JFrame home;
+	private JFrame oldHome;
+	private Usuario user;
 	private JTextField txtOddCasa;
 	private JTextField txtOddEmpate;
 	private JTextField txtOddVisitante;
@@ -55,23 +56,9 @@ public class AdicionarEvento {
 		return this.frame;
 	}
 	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AdicionarEvento window = new AdicionarEvento();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the application.
-	 */
-	public AdicionarEvento() {
+	public AdicionarEvento(JFrame oldHome, Usuario user) {
+		this.user = user;
+		this.oldHome = oldHome;
 		initialize();
 	}
 
@@ -222,6 +209,12 @@ public class AdicionarEvento {
 							oddDerrota, oddEmpate, true);
 					EventoBusiness ctr = new EventoBusiness();
 					ctr.cadastrarEvento(newEvent);
+					
+					Home newHome = new Home(user);
+					frame.setVisible(false);
+					oldHome.setVisible(false);
+					newHome.getFrame().setVisible(true);
+					
 					JOptionPane.showMessageDialog(frame, "Evento cadastrado com sucesso!");
 				} catch (Exception ex) {
 					JOptionPane.showMessageDialog(frame, ex.getMessage());
