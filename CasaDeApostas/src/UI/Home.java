@@ -271,6 +271,16 @@ public class Home {
 		});
         
         menuOpcoes.add(itemApostas);
+        
+        JMenuItem itemDeposito = new JMenuItem("Depositar");
+        itemDeposito.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Depositar depositar = new Depositar(userSession, frame);
+				depositar.getFrame().setVisible(true);
+			}
+		});
+        
+        menuOpcoes.add(itemDeposito);
         }
 
         
@@ -334,12 +344,14 @@ public class Home {
 		lblUserName.setBounds(935, 16, 267, 36);
 		frame.getContentPane().add(lblUserName);
 		
+		if(!userSession.isAdministrador()) {
 		JLabel lblSaldo = new JLabel("Saldo R$ " + String.format("%.2f", userSession.getSaldo()).replace('.', ','));
 		lblSaldo.setFont(new Font("Dialog", Font.BOLD, 14));
 		lblSaldo.setForeground(new Color(255, 255, 255));
 		lblSaldo.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblSaldo.setBounds(1081, 60, 165, 14);
 		frame.getContentPane().add(lblSaldo);
+		}
 		
 		JButton btnNewButton = new JButton("APOSTAR");
 		btnNewButton.addActionListener(new ActionListener() {
