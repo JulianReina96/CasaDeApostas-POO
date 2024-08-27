@@ -5,7 +5,6 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 
-import Business.UsuarioBusiness;
 import DAO.UsuarioDAO;
 import Model.Usuario;
 
@@ -28,6 +27,8 @@ import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import javax.swing.SwingConstants;
+
+import Controller.UsuarioController;
 
 public class ContaUsuario {
 
@@ -124,7 +125,7 @@ public class ContaUsuario {
 		btnEditar.setBackground(new Color(0, 128, 192));
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				UsuarioBusiness ctr = new UsuarioBusiness();
+				UsuarioController ctr = new UsuarioController();
 				if ((txtConfirmarSenha.getText().equals(txtSenha.getText())) && !txtNome.getText().isBlank()) 
 				{
 					
@@ -251,7 +252,7 @@ public class ContaUsuario {
 					int respostaSenha = JOptionPane.showConfirmDialog(null, campoSenha, "Digite sua senha", JOptionPane.OK_CANCEL_OPTION);
 				
 				if (respostaSenha == JOptionPane.OK_OPTION) {
-					UsuarioBusiness ctr = new UsuarioBusiness();
+					UsuarioController ctr = new UsuarioController();
 					if(ctr.verificarSenha(campoSenha.getText(), userSession.getSenha())) {
 						try {
 							ctr.DeletarUsuario(userSession.getEmail());

@@ -31,7 +31,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
-import Business.ApostaBusiness;
+import Controller.ApostaController;
 import Model.Aposta;
 import Model.Evento;
 import Model.Usuario;
@@ -68,7 +68,7 @@ public class HistoricoApostas {
 		frame.setTitle("Cat's Bet");
 
 		SwingUtilities.invokeLater(() -> {
-			ApostaBusiness ctr = new ApostaBusiness();
+			ApostaController ctr = new ApostaController();
 			try {
 				List<Aposta> apostas = ctr.listarApostas(userSession.getID());
 				Object[][] data = new Object[apostas.size()][8];

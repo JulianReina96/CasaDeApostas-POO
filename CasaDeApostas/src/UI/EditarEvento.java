@@ -25,8 +25,8 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import Business.ApostaBusiness;
-import Business.EventoBusiness;
+import Controller.ApostaController;
+import Controller.EventoController;
 import Model.Aposta;
 import Model.Evento;
 import Model.Usuario;
@@ -119,7 +119,7 @@ public class EditarEvento {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					EventoBusiness ctr = new EventoBusiness();
+					EventoController ctr = new EventoController();
 					if (rdOddCasa.isSelected()) {
 						if (ctr.finalizarEvento(evento.getID(), 1)) {
 							JOptionPane.showMessageDialog(frame, "Evento finalizado com sucesso!");
@@ -288,7 +288,7 @@ public class EditarEvento {
 					Double oddDerrota = Double.valueOf(txtOddVisitante.getText().replace(',', '.'));
 					Evento editEvent = new Evento(evento.getID(), nome, dataEvento, timeCasa, timeVisitante, oddCasa,
 							oddDerrota, oddEmpate, true);
-					EventoBusiness ctr = new EventoBusiness();
+					EventoController ctr = new EventoController();
 					ctr.editarEvento(editEvent);
 					JOptionPane.showMessageDialog(frame, "Evento editado com sucesso!");
 				} catch (Exception ex) {
@@ -312,7 +312,7 @@ public class EditarEvento {
 							"<html><b style='text-align: center;'>Tem Certeza que deseja excluir o evento</b></br><p>Não será possivel excluir eventos que ja foram apostados</p></html>",
 							"Excluir Evento?", JOptionPane.YES_NO_OPTION);
 					if (resposta == JOptionPane.YES_OPTION) {
-						EventoBusiness ctr = new EventoBusiness();
+						EventoController ctr = new EventoController();
 						ctr.deletarEvento(evento);
 					}
 				} catch (SQLException ex) {

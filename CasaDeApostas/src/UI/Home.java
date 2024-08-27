@@ -33,8 +33,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
-import Business.ApostaBusiness;
-import Business.EventoBusiness;
+import Controller.ApostaController;
+import Controller.EventoController;
 import Model.Aposta;
 import Model.Evento;
 import Model.Usuario;
@@ -74,7 +74,7 @@ public class Home {
 		frame.setTitle("Cat's Bet");
 
 		SwingUtilities.invokeLater(() -> {
-			EventoBusiness ctr = new EventoBusiness();
+			EventoController ctr = new EventoController();
 			try {
 				List<Evento> eventos = ctr.listarEventos();
 				Object[][] data = new Object[(int) eventos.stream().filter(x -> x.getAberta()).count()][6];
@@ -155,7 +155,7 @@ public class Home {
 		
 
 		SwingUtilities.invokeLater(() -> { //TESTE DA TABELA DE APOSTAS PENDENTES PARA A HOME
-			ApostaBusiness ctr = new ApostaBusiness();
+			ApostaController ctr = new ApostaController();
 				List<Aposta> apostas = userSession.getApostasPendentes();
 				Object[][] data = new Object[apostas.size()][3];
 				for (int i = 0; i < apostas.size(); i++) {
@@ -362,7 +362,7 @@ public class Home {
 						JOptionPane.showMessageDialog(frame, "O valor apostado excede o saldo!");
 					}
 					else {
-						ApostaBusiness ctr = new ApostaBusiness();
+						ApostaController ctr = new ApostaController();
 						try {
 							for (Aposta aposta : userSession.getApostasPendentes()) {
 								var apostas = ctr.reaizarAposta(aposta);

@@ -1,4 +1,4 @@
-package Business;
+package Controller;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -8,7 +8,7 @@ import DAO.UsuarioPostgreDAO;
 import Model.Usuario;
 import org.mindrot.jbcrypt.BCrypt;
 
-public class UsuarioBusiness {
+public class UsuarioController {
 	private UsuarioDAO usuarioDAO = new UsuarioPostgreDAO();
 	
 	public boolean cadastrarUsuario(Usuario user) throws SQLException{

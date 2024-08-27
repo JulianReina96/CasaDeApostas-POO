@@ -21,7 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
-import Business.UsuarioBusiness;
+import Controller.UsuarioController;
 
 import java.awt.Font;
 
@@ -91,11 +91,12 @@ public class Depositar {
 			public void actionPerformed(ActionEvent e) {
 				try {
 				user.setSaldo(user.getSaldo() + Double.valueOf(txtValor.getText().replace(',', '.')));
-				UsuarioBusiness ctr = new UsuarioBusiness();
+				UsuarioController ctr = new UsuarioController();
 				var newUser = ctr.EditarUsuario(user);
 				Home newHome = new Home(newUser);
 				oldHome.setVisible(false);
 				newHome.getFrame().setVisible(true);
+				frame.setVisible(false);
 				JOptionPane.showMessageDialog(null, "Deposito Realizado com sucesso!");
 				} catch (SQLException e1) {
 					JOptionPane.showMessageDialog(frame, "Ocorreu um erro: " + e1.getMessage());

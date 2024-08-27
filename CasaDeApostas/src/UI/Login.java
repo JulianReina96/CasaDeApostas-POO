@@ -20,7 +20,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 
-import Business.UsuarioBusiness;
+import Controller.UsuarioController;
 import Model.Usuario;
 
 import java.awt.event.MouseAdapter;
@@ -119,7 +119,7 @@ public class Login {
 		btnLogin.setForeground(new Color(255, 255, 255));
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				UsuarioBusiness ctr = new UsuarioBusiness();
+				UsuarioController ctr = new UsuarioController();
 				try {
 					userSession = ctr.Login(new Usuario(txtEmail.getText(), txtSenha.getText()));
 					if(userSession == null) {
@@ -156,6 +156,14 @@ public class Login {
 		btnMostrarSenha = new JButton(new ImageIcon(Login.class.getResource("/Icons/eye_icon.png")));
         btnMostrarSenha.setBounds(428, 205, 26, 26);
         frame.getContentPane().add(btnMostrarSenha);
+        
+        JLabel lblTitleLogin = new JLabel("Cat's Bet");
+        lblTitleLogin.setHorizontalAlignment(SwingConstants.CENTER);
+        lblTitleLogin.setForeground(Color.WHITE);
+        lblTitleLogin.setBackground(Color.WHITE);
+        lblTitleLogin.setFont(new Font("Gentium Book Basic", Font.BOLD, 35));
+        lblTitleLogin.setBounds(132, 10, 277, 84);
+        frame.getContentPane().add(lblTitleLogin);
 
         // Evento do botão para alternar a exibição da senha
         btnMostrarSenha.addActionListener(new ActionListener() {
@@ -176,5 +184,4 @@ public class Login {
             btnMostrarSenha.setIcon(new ImageIcon(Login.class.getResource("/Icons/eye_icon.png"))); // Ícone de olho
         }
     }
-
 }

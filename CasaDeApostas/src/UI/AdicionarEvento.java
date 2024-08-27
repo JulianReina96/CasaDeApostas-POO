@@ -23,8 +23,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 
-import Business.EventoBusiness;
-import Business.UsuarioBusiness;
+import Controller.EventoController;
+import Controller.UsuarioController;
 import DTOs.EventoDto;
 import Model.Evento;
 import Model.Usuario;
@@ -207,7 +207,7 @@ public class AdicionarEvento {
 					Double oddDerrota = Double.valueOf(txtOddVisitante.getText().replace(',', '.'));
 					Evento newEvent = new Evento(nome, dataEvento, timeCasa, timeVisitante, oddCasa,
 							oddDerrota, oddEmpate, true);
-					EventoBusiness ctr = new EventoBusiness();
+					EventoController ctr = new EventoController();
 					ctr.cadastrarEvento(newEvent);
 					
 					Home newHome = new Home(user);

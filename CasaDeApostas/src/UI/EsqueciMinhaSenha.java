@@ -18,7 +18,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import Business.UsuarioBusiness;
+import Controller.UsuarioController;
 import Model.Usuario;
 
 public class EsqueciMinhaSenha {
@@ -105,7 +105,7 @@ public class EsqueciMinhaSenha {
 		btnCadastrar.setBackground(new Color(0, 128, 192));
 		btnCadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				UsuarioBusiness ctr = new UsuarioBusiness();
+				UsuarioController ctr = new UsuarioController();
 				if(txtSenha.getText().equals(txtConfirmarSenha.getText())) {
 					Usuario newUser = new Usuario(txtEmail.getText(), txtSenha.getText());
 					try {

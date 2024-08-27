@@ -21,7 +21,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import Business.ApostaBusiness;
+import Controller.ApostaController;
 import Model.Aposta;
 import Model.Evento;
 import Model.Usuario;

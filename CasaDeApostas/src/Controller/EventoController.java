@@ -1,4 +1,4 @@
-package Business;
+package Controller;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -7,7 +7,7 @@ import DAO.EventoDAO;
 import DAO.EventoPostgreDAO;
 import Model.Evento;
 
-public class EventoBusiness {
+public class EventoController {
 	private EventoDAO eventoDAO = new EventoPostgreDAO();
 	
 	public boolean cadastrarEvento(Evento evento) throws SQLException {

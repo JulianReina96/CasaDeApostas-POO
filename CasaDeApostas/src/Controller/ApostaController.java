@@ -1,4 +1,4 @@
-package Business;
+package Controller;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -7,7 +7,7 @@ import DAO.ApostaDAO;
 import DAO.ApostaPostgreDAO;
 import Model.Aposta;
 
-public class ApostaBusiness {
+public class ApostaController {
 	private ApostaDAO apostaDAO = new ApostaPostgreDAO();
 	
 	public Aposta getAposta(int apostaID) throws SQLException{

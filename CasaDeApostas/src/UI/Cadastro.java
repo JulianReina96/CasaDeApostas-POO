@@ -5,7 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 
-import Business.UsuarioBusiness;
+import Controller.UsuarioController;
 import Model.Usuario;
 
 import javax.swing.JLabel;
@@ -112,7 +112,7 @@ public class Cadastro {
 		btnCadastrar.setBackground(new Color(0, 128, 192));
 		btnCadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				UsuarioBusiness ctr = new UsuarioBusiness();
+				UsuarioController ctr = new UsuarioController();
 				if (txtSenha.getText().equals(txtConfirmarSenha.getText())) {
 					Usuario newUser = new Usuario(txtNome.getText(), txtEmail.getText(), txtSenha.getText(), 0, Adm);
 					try {
