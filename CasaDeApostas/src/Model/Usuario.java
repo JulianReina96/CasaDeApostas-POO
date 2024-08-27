@@ -87,7 +87,24 @@ public class Usuario {
 		apostasPendentes.clear();
 	}
 	
-	public void removerApostaPendente (Aposta aposta) {
-		apostasPendentes.remove(aposta);
+	public void removerApostaPendente (int ID) {
+		apostasPendentes.remove(ID);
+	}
+	
+	public double somarApostaPendente () {
+		double valor = 0; 
+		for (Aposta aposta : apostasPendentes) {
+			valor += aposta.getValor();
+		};
+		return valor;
+	}
+	
+	public double ganhosApostaPendente () {
+		double valor = 0; 
+		for (Aposta aposta : apostasPendentes) {
+			valor += aposta.getValor()*aposta.getOddApostada();
+		};
+		return valor;
 	}
 }
+

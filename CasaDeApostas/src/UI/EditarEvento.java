@@ -58,7 +58,7 @@ public class EditarEvento {
 		this.evento = evento;
 		this.home = home;
 		this.user = user;
-		
+
 		initialize();
 	}
 
@@ -121,30 +121,24 @@ public class EditarEvento {
 				try {
 					EventoBusiness ctr = new EventoBusiness();
 					if (rdOddCasa.isSelected()) {
-						if(ctr.finalizarEvento(evento.getID(), 1)) {
+						if (ctr.finalizarEvento(evento.getID(), 1)) {
 							JOptionPane.showMessageDialog(frame, "Evento finalizado com sucesso!");
-						}
-						else {
+						} else {
 							JOptionPane.showMessageDialog(frame, "Ocorreu um erro ao finalizar o Evento!");
 						}
-					}
-					else if (rdOddEmpate.isSelected()) {
-						if(ctr.finalizarEvento(evento.getID(), 2)) {
+					} else if (rdOddEmpate.isSelected()) {
+						if (ctr.finalizarEvento(evento.getID(), 2)) {
 							JOptionPane.showMessageDialog(frame, "Evento finalizado com sucesso!");
-						}
-						else {
+						} else {
 							JOptionPane.showMessageDialog(frame, "Ocorreu um erro ao finalizar o Evento!");
 						}
-					}
-					else if (rdOddFora.isSelected()) {
-						if(ctr.finalizarEvento(evento.getID(), 3)) {
+					} else if (rdOddFora.isSelected()) {
+						if (ctr.finalizarEvento(evento.getID(), 3)) {
 							JOptionPane.showMessageDialog(frame, "Evento finalizado com sucesso!");
-						}
-						else {
+						} else {
 							JOptionPane.showMessageDialog(frame, "Ocorreu um erro ao finalizar o Evento!");
 						}
-					}
-					else {
+					} else {
 						JOptionPane.showMessageDialog(frame, "Selecione o resultado do evento para finalizar!");
 						return;
 					}
@@ -285,21 +279,22 @@ public class EditarEvento {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					String nome = txtNomeEvento.getText();
-					LocalDate dataEvento = LocalDate.parse(txtDataEvento.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+					LocalDate dataEvento = LocalDate.parse(txtDataEvento.getText(),
+							DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 					String timeCasa = txtTimeCasa.getText();
 					String timeVisitante = txtTimeVisitante.getText();
 					Double oddCasa = Double.valueOf(txtOddCasa.getText().replace(',', '.'));
 					Double oddEmpate = Double.valueOf(txtOddEmpate.getText().replace(',', '.'));
 					Double oddDerrota = Double.valueOf(txtOddVisitante.getText().replace(',', '.'));
-					Evento editEvent = new Evento(evento.getID(), nome, dataEvento, timeCasa, timeVisitante, oddCasa, oddDerrota, oddEmpate, true);
+					Evento editEvent = new Evento(evento.getID(), nome, dataEvento, timeCasa, timeVisitante, oddCasa,
+							oddDerrota, oddEmpate, true);
 					EventoBusiness ctr = new EventoBusiness();
 					ctr.editarEvento(editEvent);
 					JOptionPane.showMessageDialog(frame, "Evento editado com sucesso!");
-				}
-				catch(Exception ex) {
+				} catch (Exception ex) {
 					JOptionPane.showMessageDialog(frame, ex.getMessage());
 				}
-				
+
 			}
 		});
 		btnEditar.setForeground(new Color(255, 255, 255));
@@ -310,6 +305,27 @@ public class EditarEvento {
 		frame.getContentPane().add(btnEditar);
 
 		JButton btnDeletar = new JButton("Deletar");
+		btnDeletar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					int resposta = JOptionPane.showConfirmDialog(frame,
+							"<html><b style='text-align: center;'>Tem Certeza que deseja excluir o evento</b></br><p>Não será possivel excluir eventos que ja foram apostados</p></html>",
+							"Excluir Evento?", JOptionPane.YES_NO_OPTION);
+					if (resposta == JOptionPane.YES_OPTION) {
+						EventoBusiness ctr = new EventoBusiness();
+						ctr.deletarEvento(evento);
+					}
+				} catch (SQLException ex) {
+				    if (ex.getSQLState().equals("23503")) {
+				        JOptionPane.showMessageDialog(frame, "O evento ja possui apostas, logo não pode ser deletado!");
+				    } else {
+				        // Tratamento para outros tipos de exceções
+				        JOptionPane.showMessageDialog(frame, "Ocorreu um erro inesperado: " + ex.getMessage());
+				    }
+					
+				}
+			}
+		});
 		btnDeletar.setMnemonic('D');
 		btnDeletar.setForeground(Color.WHITE);
 		btnDeletar.setFont(new Font("Dialog", Font.BOLD, 16));

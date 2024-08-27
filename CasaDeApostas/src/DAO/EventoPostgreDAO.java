@@ -59,7 +59,7 @@ public class EventoPostgreDAO implements EventoDAO{
 	public boolean cadastrarEvento(Evento evento) throws SQLException {
 		PreparedStatement ps = ConexaoSingleton.getInstance().getConexao()
 				.prepareStatement("INSERT INTO EVENTO(NOME, DATA, TIMECASA, TIMEVISITANTE, ODDCASA, ODDVISITANTE, ODDEMPATE, ABERTA)"
-						+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?");
+						+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
 		
 		ps.setString(1, evento.getNome());
 		ps.setDate(2, Date.valueOf(evento.getDataEvento()));
